@@ -1,6 +1,7 @@
-const crypto = require('crypto')
-const Sequelize = require('sequelize')
-const db = require('../db')
+const bcrypt = require('bcrypt');
+const crypto = require('crypto');
+const Sequelize = require('sequelize');
+const db = require('../db');
 
 const User = db.define('user', {
   email: {
@@ -10,22 +11,46 @@ const User = db.define('user', {
   },
   password: {
     type: Sequelize.STRING,
-    // Making `.password` act like a func hides it when serializing to JSON.
-    // This is a hack to get around Sequelize's lack of a "private" option.
     get() {
       return () => this.getDataValue('password')
     }
   },
   salt: {
     type: Sequelize.STRING,
-    // Making `.salt` act like a function hides it when serializing to JSON.
-    // This is a hack to get around Sequelize's lack of a "private" option.
     get() {
       return () => this.getDataValue('salt')
     }
   },
   googleId: {
     type: Sequelize.STRING
+  },
+  githubId: {
+    type: Sequelize.STRING
+  },
+  facebookId: {
+    type: Sequelize.STRING
+  },
+  firstName: {
+    type: Sequelize.STRING,
+    allowNull: false,
+  },
+  lastName: {
+    type: Sequelize.STRING,
+    allowNull: false
+  },
+  cart: Sequelize.ARRAY(Sequelize.JSON)
+}, {
+  getterMethods: {
+    fullName() {
+      return this.firstName + this.lastName
+    }
+  },
+  setterMethods: {
+    fullName(value) {
+      const names = value.split(' ');
+      this.setDataValue('firstName', names.slice(0, -1).join(' '));
+      this.setDataValue('lastName', names.slice(-1).join(' '));
+    }
   }
 })
 
@@ -46,11 +71,8 @@ User.generateSalt = function() {
 }
 
 User.encryptPassword = function(plainText, salt) {
-  return crypto
-    .createHash('RSA-SHA256')
-    .update(plainText)
-    .update(salt)
-    .digest('hex')
+  return bcrypt
+    .hashSync(plainText, salt)
 }
 
 /**
