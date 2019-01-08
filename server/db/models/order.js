@@ -6,10 +6,6 @@ const Order = db.define('Order', {
     type: Sequelize.ARRAY(Sequelize.JSON),
     allowNull: false
   },
-  user: {
-    type: Sequelize.JSON,
-    allowNull: true
-  },
   userInfo: {
     type: Sequelize.JSON,
     allowNull: true
