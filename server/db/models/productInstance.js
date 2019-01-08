@@ -30,10 +30,11 @@ const ProductInstance = db.define('productAbstract', {
     type: Sequelize.STRING,
     allowNull: false
   },
-  Description: {
-    type: Sequelize.TEXT,
-    defaultValue:
-      'Dozens of nerd hours were wasted bringing you this product...Enjoy!'
+  Quantity: {
+    type: Sequelize.INTEGER,
+    validate: {
+      min: 0
+    }
   }
 })
 
