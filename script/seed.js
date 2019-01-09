@@ -1,7 +1,13 @@
 'use strict'
 require('../secrets')
 const db = require('../server/db')
-const {User, Address, PaymentInfo, Order} = require('../server/db/models')
+const {
+  User,
+  Address,
+  PaymentInfo,
+  Order,
+  ProductAbstract
+} = require('../server/db/models')
 const faker = require('faker')
 
 async function seed() {
@@ -9,6 +15,7 @@ async function seed() {
   console.log('db synced!')
 
   const totalUsers = 50
+  const totalProductsAb = 25
 
   const users = Array(totalUsers)
     .fill(null)
@@ -17,6 +24,14 @@ async function seed() {
       password: faker.internet.password(),
       firstName: faker.name.firstName(),
       lastName: faker.name.lastName()
+    }))
+
+  const productsAb = Array(totalProductsAb)
+    .fill(null)
+    .map(_ => ({
+      name: faker.commerce.productName(),
+      price: faker.random.number({min: 1000, max: 10000}),
+      category: ['longSleeve', 'shortSleeve', 'hoodie']
     }))
 
   const addresses = Array(totalUsers)
@@ -43,7 +58,7 @@ async function seed() {
       : Array(Math.ceil(Math.random() * 10))
           .fill(null)
           .map(_ => ({
-            productId: Math.floor(Math.random() * 50),
+            productId: Math.floor(Math.random() * totalProductsAb),
             quantity: Math.ceil(Math.random() * 6)
           }))
 
@@ -61,10 +76,17 @@ async function seed() {
     returning: true
   })
   const orderModels = await Order.bulkCreate(orders, {returning: true})
+  const productAbModels = await ProductAbstract.bulkCreate(productsAb, {
+    returning: true
+  })
 
   for (let i = 0; i < totalUsers; i++) {
     await addressModels[i].setUser(userModels[i])
     await paymentModels[i].setUser(userModels[i])
+  }
+
+  for (let i = 0; i < totalUsers * 10; i++) {
+    await orderModels[i].setUser(userModels[i % totalUsers])
   }
 
   console.log(`seeded ${totalUsers} users`)
