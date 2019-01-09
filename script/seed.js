@@ -26,6 +26,8 @@ async function seed() {
       lastName: faker.name.lastName()
     }))
 
+  //await User.create(users[0]);
+
   const productsAb = Array(totalProductsAb)
     .fill(null)
     .map(_ => ({
@@ -81,6 +83,13 @@ async function seed() {
   })
 
   for (let i = 0; i < totalUsers; i++) {
+    userModels[i].salt = User.generateSalt()
+    userModels[i].password = User.encryptPassword(
+      userModels[i].password(),
+      userModels[i].salt()
+    )
+
+    await userModels[i].save()
     await addressModels[i].setUser(userModels[i])
     await paymentModels[i].setUser(userModels[i])
   }
