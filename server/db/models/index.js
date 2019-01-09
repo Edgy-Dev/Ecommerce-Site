@@ -20,5 +20,7 @@ const ProductAbstract = require('./productAbstract')
  */
 
 module.exports = {
-  User
+  User,
+  ProductAbstract,
+  ProductInstance
 }
