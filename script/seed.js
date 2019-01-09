@@ -89,6 +89,7 @@ async function seed() {
     await orderModels[i].setUser(userModels[i % totalUsers])
   }
 
+
   console.log(`seeded ${totalUsers} users`)
   console.log(`seeded successfully`)
 }
