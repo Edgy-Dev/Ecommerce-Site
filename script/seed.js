@@ -1,28 +1,73 @@
 'use strict'
-
+require('../secrets')
 const db = require('../server/db')
-const {User} = require('../server/db/models')
+const {User, Address, PaymentInfo, Order} = require('../server/db/models')
+const faker = require('faker')
 
 async function seed() {
   await db.sync({force: true})
   console.log('db synced!')
 
-  const users = await Promise.all([
-    User.create({
-      email: 'cody@email.com',
-      password: '123',
-      firstName: 'cody',
-      lastName: 'jokes'
-    }),
-    User.create({
-      email: 'murphy@email.com',
-      password: '123',
-      firstName: 'Murphy',
-      lastName: 'Williams'
-    })
-  ])
+  const totalUsers = 50
 
-  console.log(`seeded ${users.length} users`)
+  const users = Array(totalUsers)
+    .fill(null)
+    .map(_ => ({
+      email: faker.internet.email(),
+      password: faker.internet.password(),
+      firstName: faker.name.firstName(),
+      lastName: faker.name.lastName()
+    }))
+
+  const addresses = Array(totalUsers)
+    .fill(null)
+    .map(_ => ({
+      streetAddress: faker.address.streetAddress(),
+      city: faker.address.city(),
+      state: faker.address.stateAbbr(),
+      zipCode: faker.address.zipCode()
+    }))
+
+  const payMentInfos = Array(totalUsers)
+    .fill(null)
+    .map(_ => ({
+      paymentToken: faker.random.alphaNumeric(30),
+      lastFourDigits: faker.random.number({min: 1000, max: 9999})
+    }))
+
+  const completed = () => Math.random() > 0.5
+
+  const cart = () =>
+    Math.random() > 0.5
+      ? []
+      : Array(Math.ceil(Math.random() * 10))
+          .fill(null)
+          .map(_ => ({
+            productId: Math.floor(Math.random() * 50),
+            quantity: Math.ceil(Math.random() * 6)
+          }))
+
+  const orders = Array(totalUsers * 10)
+    .fill(null)
+    .map(_ => ({
+      cart: cart(),
+      total: faker.random.number(),
+      completed: completed()
+    }))
+
+  const userModels = await User.bulkCreate(users, {returning: true})
+  const addressModels = await Address.bulkCreate(addresses, {returning: true})
+  const paymentModels = await PaymentInfo.bulkCreate(payMentInfos, {
+    returning: true
+  })
+  const orderModels = await Order.bulkCreate(orders, {returning: true})
+
+  for (let i = 0; i < totalUsers; i++) {
+    await addressModels[i].setUser(userModels[i])
+    await paymentModels[i].setUser(userModels[i])
+  }
+
+  console.log(`seeded ${totalUsers} users`)
   console.log(`seeded successfully`)
 }
 
