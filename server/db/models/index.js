@@ -11,9 +11,6 @@ User.hasMany(Address)
 PaymentInfo.belongsTo(User)
 User.hasMany(PaymentInfo)
 
-ProductInstance.belongsTo(ProductAbstract)
-ProductAbstract.hasMany(ProductInstance)
-
 Order.belongsTo(User)
 User.hasMany(Order)
 
