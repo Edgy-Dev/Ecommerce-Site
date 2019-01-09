@@ -21,7 +21,7 @@ async function seed() {
     .fill(null)
     .map(_ => ({
       email: faker.internet.email(),
-      password: faker.internet.password(),
+      password: 'password',
       firstName: faker.name.firstName(),
       lastName: faker.name.lastName()
     }))
