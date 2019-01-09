@@ -40,11 +40,17 @@ const User = db.define(
     },
     firstName: {
       type: Sequelize.STRING,
-      allowNull: false
+      allowNull: false,
+      validate: {
+        notEmpty: true
+      }
     },
     lastName: {
       type: Sequelize.STRING,
-      allowNull: false
+      allowNull: false,
+      validate: {
+        notEmpty: true
+      }
     },
     cart: Sequelize.ARRAY(Sequelize.JSON)
   },
@@ -66,18 +72,25 @@ const User = db.define(
 
 module.exports = User
 
+const compareAsync = (password, userPassword) => {
+  return new Promise(resolve => {
+    const valid = bcrypt.compareSync(password, userPassword)
+    resolve(valid)
+  })
+}
+
 /**
  * instanceMethods
  */
 User.prototype.validPassword = function(password) {
-  return bcrypt.compareSync(password, this.password())
+  return compareAsync(password, this.password())
 }
 
 /**
  * classMethods
  */
 User.generateSalt = function() {
-  return bcrypt.genSaltSync(14)
+  return bcrypt.genSaltSync(5)
 }
 
 User.encryptPassword = function(plainText, salt) {
@@ -87,12 +100,22 @@ User.encryptPassword = function(plainText, salt) {
 /**
  * hooks
  */
-const setSaltAndPassword = user => {
+const setSaltAndPassword = function(user) {
   if (user.changed('password')) {
     user.salt = User.generateSalt()
     user.password = User.encryptPassword(user.password(), user.salt())
   }
 }
 
+const normalizeName = name => {
+  name = name.toLowerCase()
+  return name[0].toUpperCase() + name.slice(1)
+}
+
 User.beforeCreate(setSaltAndPassword)
 User.beforeUpdate(setSaltAndPassword)
+
+User.addHook('beforeSave', user => {
+  user.firstName = normalizeName(user.firstName)
+  user.lastName = normalizeName(user.lastName)
+})
