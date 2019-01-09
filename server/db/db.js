@@ -1,3 +1,5 @@
+if (process.env.NODE_ENV === 'test') require('../../secrets')
+
 const Sequelize = require('sequelize')
 const pkg = require('../../package.json')
 
