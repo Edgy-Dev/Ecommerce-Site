@@ -19,5 +19,7 @@ const ProductAbstract = require('./productAbstract')
  * instead of: const User = require('../db/models/user')
  */
 module.exports = {
-  User
+  User,
+  ProductAbstract,
+  ProductInstance
 }
