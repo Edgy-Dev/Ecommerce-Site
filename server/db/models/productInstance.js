@@ -1,36 +1,36 @@
 const Sequelize = require('sequelize')
 const db = require('../db')
 
-const ProductInstance = db.define('productAbstract', {
+const ProductInstance = db.define('productInstance', {
   name: {
     type: Sequelize.STRING,
     allowNull: false,
     validate: {
-      len: 1
+      len: {args: 1, msg: 'name must be provided'}
     }
   },
   category: {
     type: Sequelize.STRING,
     allowNull: false,
     validate: {
-      len: 1
+      len: {args: 1, msg: 'product must have a category'}
     }
   },
-  Price: {
+  price: {
     type: Sequelize.INTEGER,
     validate: {
-      min: 1
+      min: {args: 1, msg: 'price of at least one dollar is required'}
     }
   },
-  Color: {
+  color: {
     type: Sequelize.STRING,
     allowNull: false
   },
-  Size: {
+  size: {
     type: Sequelize.STRING,
     allowNull: false
   },
-  Quantity: {
+  quantity: {
     type: Sequelize.INTEGER,
     validate: {
       min: 0
