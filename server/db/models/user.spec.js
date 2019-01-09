@@ -94,6 +94,14 @@ describe('User model', () => {
           })
         )
       })
+      it('should capitilize names', async function() {
+        user.firstName = 'valid'
+        user.lastName = 'name'
+        user.save()
+
+        expect(user.firstName).to.be.equal('Valid')
+        expect(user.lastName).to.be.equal('Name')
+      })
       it('should not save invalid first name', async function() {
         const invalidNames = [null, undefined, '']
 
