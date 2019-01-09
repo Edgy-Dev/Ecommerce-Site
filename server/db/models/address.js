@@ -6,36 +6,45 @@ const Address = db.define(
   {
     streetAddress: {
       type: Sequelize.STRING,
-      allowNull: false
+      allowNull: false,
+      validate: {
+        is: [/(^|\b\s+)\d+\s+/] // Starts with number
+      }
     },
     city: {
       type: Sequelize.STRING,
-      allowNull: false
+      allowNull: false,
+      validate: {
+        notEmpty: true
+      }
     },
     state: {
       type: Sequelize.STRING,
-      allowNull: false
+      allowNull: false,
+      validate: {
+        isAbbrev(value) {
+          if (value.length !== 2) {
+            throw new Error('State must be abbreviated')
+          }
+        }
+      }
     },
     zipCode: {
-      type: Sequelize.INTEGER,
-      allowNull: false
+      type: Sequelize.STRING,
+      allowNull: false,
+      validate: {
+        is: /(^\d{5}$)|(^\d{5}-\d{4}$)/, // ##### or #####-####
+        notEmpty: true
+      }
     }
   },
   {
     getterMethods: {
-      firstLine() {
-        return this.streetAddress
-      },
-
       secondLine() {
         return `${this.city}, ${this.state}, ${this.zipCode}`
       }
     },
     setterMethods: {
-      firstLine(value) {
-        this.setDataValue('streetAddress', value)
-      },
-
       secondLine(value) {
         const [city, state, zipCode] = value.split(' ')
         this.setDataValue('city', city)
@@ -45,5 +54,11 @@ const Address = db.define(
     }
   }
 )
+
+Address.addHook('beforeSave', address => {
+  address.streetAddress = address.streetAddress.toUpperCase()
+  address.city = address.city.toUpperCase()
+  address.state = address.state.toUpperCase()
+})
 
 module.exports = Address

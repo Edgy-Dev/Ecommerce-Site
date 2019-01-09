@@ -5,18 +5,18 @@ const db = require('../index')
 const User = db.model('user')
 
 describe('User model', () => {
-  beforeEach(() => {
-    return db.sync({force: true})
-  })
-
   let user
   const sequelizeErrors = [
     'SequelizeValidationError',
     'SequelizeUniqueConstraintError'
   ]
 
-  beforeEach(async function() {
-    user = await User.create({
+  beforeEach(() => {
+    return db.sync({force: true})
+  })
+
+  beforeEach(() => {
+    user = new User({
       email: 'valid@email.com',
       password: 'password',
       firstName: 'Valid',
@@ -31,12 +31,16 @@ describe('User model', () => {
         expect(typeof user.salt()).to.be.equal('string')
       })
 
-      it('should return true if the password is correct', () => {
-        expect(user.validPassword('password')).to.be.equal(true)
+      it('should return true if the password is correct', async function() {
+        await user.save()
+        const valid = await user.validPassword('password')
+        expect(valid).to.be.equal(true)
       })
 
-      it('should return false if the password is incorrect', () => {
-        expect(user.validPassword('bonez')).to.be.equal(false)
+      it('should return false if the password is incorrect', async function() {
+        await user.save()
+        const valid = await user.validPassword('bonez')
+        expect(valid).to.be.equal(false)
       })
 
       it('should encrypt password', async function() {
@@ -44,12 +48,12 @@ describe('User model', () => {
         await user.save()
         expect(user.password()).not.to.be.equal(unEncryptedPass)
         user.password = 'newPassword'
-        user.save()
+        await user.save()
         expect(user.password()).not.to.be.equal('newPassword')
       })
     }) // end describe('correctPassword')
     describe('correctEmail', () => {
-      it('should not save invalid emails', async function() {
+      it('should not save invalid emails', function() {
         const invalidEmails = ['', null, undefined, 23234, 'astring']
 
         return Promise.all(
@@ -66,7 +70,8 @@ describe('User model', () => {
       })
       it('should reject creating user if email exists', async function() {
         try {
-          await user.create({
+          await user.save()
+          await User.create({
             email: 'valid@email.com',
             password: 'password',
             firstName: 'Invalid',
@@ -79,9 +84,8 @@ describe('User model', () => {
       })
     }) // end describe('correctEmail')
     describe('correctNames', () => {
-      it('should not save invalid first name', async function() {
+      it('should not save invalid first name', function() {
         const invalidNames = [null, undefined, '']
-
         return Promise.all(
           invalidNames.map(async name => {
             user.firstName = name
@@ -97,12 +101,12 @@ describe('User model', () => {
       it('should capitilize names', async function() {
         user.firstName = 'valid'
         user.lastName = 'name'
-        user.save()
+        await user.save()
 
         expect(user.firstName).to.be.equal('Valid')
         expect(user.lastName).to.be.equal('Name')
       })
-      it('should not save invalid first name', async function() {
+      it('should not save invalid last name', function() {
         const invalidNames = [null, undefined, '']
 
         return Promise.all(
