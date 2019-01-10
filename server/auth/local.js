@@ -10,19 +10,12 @@ const localStategdy = new LocalStatedgy(
   async (email, password, done) => {
     try {
       /* Find user */
-      console.log(email, 'here')
       const user = await User.findOne({
         where: {email: email},
-        attributes: ['firstName', 'lastName'],
         include: [
           {
             model: Address,
-            attributes: [
-              ['streetAddress', 'firstLine'],
-              'city',
-              'state',
-              'zipCode'
-            ]
+            attributes: {exclude: ['createdAt', 'updatedAt', 'userId']}
           }
         ]
       })
@@ -31,14 +24,17 @@ const localStategdy = new LocalStatedgy(
       if (!user) {
         return done(null, false)
       }
-      if (!user.validPassword(password)) {
+      const validPassword = await user.validPassword(password)
+      if (!validPassword) {
         return done(null, false)
       }
 
       /* Return user data */
       return done(null, {
         id: user.id,
-        firstName: user
+        firstName: user.firstName,
+        lastName: user.lastName,
+        addresses: user.addresses
       })
     } catch (err) {
       return done(err)
