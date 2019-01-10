@@ -11,3 +11,8 @@ export const makeSelectAppLoading = () =>
   createSelector(selectApp, appState => {
     return appState.appLoading
   })
+
+export const makeSelectAppDialogOptions = () =>
+  createSelector(selectApp, appState => {
+    return appState.dialogOptions
+  })

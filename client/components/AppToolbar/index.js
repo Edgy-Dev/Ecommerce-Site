@@ -28,7 +28,7 @@ const AppToolbar = props => {
       <Toolbar disableGutters={!props.open}>
         <Hidden xsDown implementation="css">
           <img
-            src="/images/edgydev.png"
+            src="/images/logo.svg"
             className={classNames(classes.menuButton, {
               [classes.hide]: props.open
             })}
@@ -47,8 +47,8 @@ const AppToolbar = props => {
             <MenuIcon />
           </IconButton>
         </Hidden>
-
-        <h2 className={classes.title}>Hello World</h2>
+        <img className={classes.logo} src="/images/logo.svg" alt="EdgyDev" />
+        <h2 className={classes.title}>Edgy Dev</h2>
         <UserProfileOptions
           user={props.user}
           logout={props.logout}
@@ -59,7 +59,9 @@ const AppToolbar = props => {
   )
 }
 
-const mapStateToProps = () => createStructuredSelector({})
+const mapStateToProps = () => ({
+  user: 'Duncan Gichimu'
+})
 
 const mapDispatchToProps = dispatch => ({
   logout: () => dispatch(logout())

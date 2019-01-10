@@ -18,14 +18,17 @@ const styles = theme => ({
     })
   },
   menuButton: {
-    marginLeft: 12,
-    marginRight: 36
+    marginLeft: 12
   },
   hide: {
     display: 'none'
   },
   title: {
     flexGrow: 1
+  },
+  logo: {
+    length: '60px',
+    width: '60px'
   }
 })
 

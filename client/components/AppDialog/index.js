@@ -1,11 +1,11 @@
 import React from 'react'
 import {createStructuredSelector} from 'reselect'
-import {makeSelectAppDialogOptions} from './selectors'
 import {connect} from 'react-redux'
 import PropTypes from 'prop-types'
 
 import DefaultDialog from '../shared/Dialogs/DefaultDialog'
-import {closeDialog} from './actions'
+import {closeDialog} from '../../store/actions/app'
+import {makeSelectAppDialogOptions} from '../../store/selectors/app'
 
 const AppDialog = props => {
   return (

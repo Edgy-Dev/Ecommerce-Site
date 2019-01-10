@@ -17,6 +17,20 @@ const styles = theme => ({
   },
   paper: {
     marginRight: theme.spacing.unit * 2
+  },
+  profileIcon: {
+    marginRight: '10px'
+  },
+  profileLogo: {
+    width: '50px',
+    height: '50px',
+    borderRadius: '50%'
+  },
+  user: {
+    textTransform: 'none !important',
+    [theme.breakpoints.down('xs')]: {
+      display: 'none'
+    }
   }
 })
 
@@ -60,11 +74,11 @@ class UserProfileOptions extends React.Component {
             onClick={this.handleOpen}
           >
             <img
-              className="profile-logo"
+              className={classes.profileLogo}
               src="/images/profile.jpg"
               alt="/images/profile.jpg"
             />
-            <Typography className="user" variant="subtitle1">
+            <Typography className={classes.user} variant="subtitle1">
               {this.props.user}
             </Typography>
             <KeyboardArrowDown style={{marginLeft: '5px'}} />
@@ -77,13 +91,16 @@ class UserProfileOptions extends React.Component {
           >
             <MenuItem
               onClick={this.handleViewProfile}
-              className="profile-option"
+              className={classes.profileOption}
             >
-              <AccountCircle className="profile-icon" />
+              <AccountCircle className={classes.profileIcon} />
               <span>Profile</span>
             </MenuItem>
-            <MenuItem onClick={this.handleLogoutOut} className="profile-option">
-              <PowerSettingsNew className="profile-icon" />
+            <MenuItem
+              onClick={this.handleLogoutOut}
+              className={classes.profileOption}
+            >
+              <PowerSettingsNew className={classes.profileIcon} />
               <span>Logout</span>
             </MenuItem>
           </CenteredMenu>

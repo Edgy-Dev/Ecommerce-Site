@@ -7,7 +7,6 @@ import Drawer from '@material-ui/core/Drawer'
 import Hidden from '@material-ui/core/Hidden'
 import List from '@material-ui/core/List'
 import Divider from '@material-ui/core/Divider'
-import MenuIcon from '@material-ui/icons/Menu'
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
@@ -34,11 +33,7 @@ const SideNav = props => {
   const {classes} = props
 
   const iconAction = () =>
-    props.variant === 'permanent' ? (
-      <IconButton onClick={props.handleDrawerDock}>
-        <MenuIcon />
-      </IconButton>
-    ) : (
+    props.variant === 'permanent' ? null : (
       <IconButton onClick={props.handleDrawerClose}>
         <ChevronLeftIcon />
       </IconButton>
@@ -50,10 +45,10 @@ const SideNav = props => {
         <div className={classes.logoContainer}>
           <img
             className={classes.logo}
-            src="/images/bigspoollogo.png"
-            alt="/images/bigspoollogo.png"
+            src="/images/logo.svg"
+            alt="/images/logo.svg"
           />
-          <span>BIGSPOOL</span>
+          <span>EDGY DEV</span>
         </div>
         {iconAction()}
       </div>
@@ -71,24 +66,17 @@ const SideNav = props => {
 const Navbar = props => {
   const {classes} = props
   const navItems = navigation
+
   return (
     <React.Fragment>
       <Hidden xsDown implementation="js">
         <Drawer
           variant="permanent"
-          className={classNames(classes.drawer, {
-            [classes.drawerOpen]: props.open,
-            [classes.drawerClose]: !props.open
-          })}
+          className={classNames(classes.drawer, classes.drawerOpen)}
           classes={{
-            paper: classNames({
-              [classes.drawerOpen]: props.open,
-              [classes.drawerClose]: !props.open
-            })
+            paper: classNames(classes.drawerOpen)
           }}
-          onMouseEnter={props.handleMouseEnter}
-          onMouseLeave={props.handleMouseLeave}
-          open={props.open}
+          open
         >
           <SideNav
             className={classes.sidenav}

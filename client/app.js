@@ -7,8 +7,8 @@ import styles from './appStyles'
 import {
   AppSnackbar,
   AppResourceLoading,
-  AppToolbar,
-  AppNavbar
+  AppToolAndNavbar,
+  AppDialog
 } from './components'
 import Routes from './routes'
 
@@ -20,15 +20,14 @@ const App = props => {
       <AppResourceLoading />
       <div className={classes.contentWrapper}>
         <CssBaseline />
-        <AppToolbar handleDrawerOpen={() => console.log('open')} open={true} />
-        <AppNavbar />
+        <AppToolAndNavbar />
         <main className={classes.content}>
           <div className={classes.toolbar} />
           <Routes />
         </main>
       </div>
       <AppSnackbar />
-      {/* <AppDialog /> */}
+      <AppDialog />
     </div>
   )
 }

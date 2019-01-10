@@ -7,26 +7,20 @@ export default [
   },
   {
     id: 2,
-    label: 'Products',
-    icon: 'shopping_basket',
-    to: '/products'
+    label: 'Long Sleeve Shirts',
+    icon: 'shopping_cart',
+    to: '/porducts/longsleeves'
   },
   {
     id: 3,
-    label: 'Orders',
+    label: 'Short Sleeve Shirts',
     icon: 'monetization_on',
-    to: '/orders'
+    to: '/products/shortsleeves'
   },
   {
     id: 4,
-    label: 'Orders History',
-    icon: 'history',
-    to: '/order-submission-history'
-  },
-  {
-    id: 5,
-    label: 'Incorrect Svgs',
-    icon: 'blur_on',
-    to: '/incorrect-svgs'
+    label: 'Hoodies',
+    icon: 'account_balance',
+    to: '/products/hoodies'
   }
 ]

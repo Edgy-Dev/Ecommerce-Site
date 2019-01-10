@@ -10,6 +10,19 @@ export const resolveAppMessage = () => ({
   type: types.RESOLVE_APP_MESSAGE
 })
 
+export const openDialog = dialogOptions => ({
+  type: types.OPEN_APP_DIALOG,
+  dialogOptions
+})
+
+export const closeDialog = () => ({
+  type: types.CLOSE_APP_DIALOG
+})
+
+export const resetDialog = () => ({
+  type: types.RESET_APP_DIALOG
+})
+
 export const appErrorPage = (status, message) => ({
   type: types.APP_ERROR_PAGE,
   status,
