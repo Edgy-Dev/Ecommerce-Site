@@ -13,6 +13,8 @@ const sessionStore = new SequelizeStore({db})
 const PORT = process.env.PORT || 8080
 const app = express()
 const socketio = require('socket.io')
+
+const {ResponseMessage} = require('./utils')
 module.exports = app
 
 // This is a global Mocha hook, used for resource cleanup.
@@ -31,7 +33,7 @@ if (process.env.NODE_ENV === 'test') {
  */
 
 // passport registration
-passport.serializeUser((user, done) => done(null, user.id))
+passport.serializeUser((user, done) => done(null, user))
 
 passport.deserializeUser(async (id, done) => {
   try {
@@ -90,9 +92,18 @@ const createApp = () => {
 
   // error handling endware
   app.use((err, req, res, next) => {
-    console.error(err)
-    console.error(err.stack)
-    res.status(err.status || 500).send(err.message || 'Internal server error.')
+    // If you pass withFailError=true in passport.authenticate,
+    // passportJS throws 500 error on login failure. Handle
+    // that error here. Note: without the above option, passportJS
+    // with will respond with text instead of JSON.
+    if (err.name === 'AuthenticationError' && err.message === 'Unauthorized') {
+      err.message = 'Incorrect Email/Password.'
+      res.status(401).send(new ResponseMessage(null, err))
+    } else {
+      console.error(err)
+      console.error(err.stack)
+      res.status(err.status || 500).send(new ResponseMessage(null, err))
+    }
   })
 }
 
