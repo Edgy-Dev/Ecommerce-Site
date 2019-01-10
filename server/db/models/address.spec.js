@@ -24,7 +24,7 @@ describe('Address model', () => {
 
   it('should reject invalid street address', function() {
     const invalidStreetAddresses = ['no house number', 123123, null, undefined]
-
+    // OB/JD: can use `for..of` and `await`
     return Promise.all(
       invalidStreetAddresses.map(async function(streetAddress) {
         address.streetAddress = streetAddress
@@ -34,6 +34,7 @@ describe('Address model', () => {
             `should not address with save invalid street address ${streetAddress}`
           )
         } catch (err) {
+          // OB/JD: unnecessary log
           console.error(err)
           expect(err.name).to.be.equal(validationError)
         }

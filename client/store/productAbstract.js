@@ -8,6 +8,7 @@ const GET_INVENTORY = 'GET_INVENTORY'
 /**
  * INITIAL STATE
  */
+// OB/JD: looks like the store state changes shape
 const defaultState = {
   allProducts: [],
   displayedProducts: []

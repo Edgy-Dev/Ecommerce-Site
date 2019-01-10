@@ -12,6 +12,7 @@ describe('productInstance model', () => {
   describe('validations', () => {
     let product = productInstance.build({name: ''})
     it('fails if name is null', async () => {
+      // OB/JD: consider using chai-as-promised
       try {
         await product.validate()
         throw Error('validation was successful but should have failed')
