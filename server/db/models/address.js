@@ -55,6 +55,7 @@ const Address = db.define(
   }
 )
 
+// OB/JD: could be setter methods
 Address.addHook('beforeSave', address => {
   address.streetAddress = address.streetAddress.toUpperCase()
   address.city = address.city.toUpperCase()
