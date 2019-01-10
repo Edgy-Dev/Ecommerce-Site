@@ -23,12 +23,6 @@ const User = db.define(
         return () => this.getDataValue('password')
       }
     },
-    salt: {
-      type: Sequelize.STRING,
-      get() {
-        return () => this.getDataValue('salt')
-      }
-    },
     googleId: {
       type: Sequelize.STRING
     },
@@ -57,14 +51,7 @@ const User = db.define(
   {
     getterMethods: {
       fullName() {
-        return this.firstName + this.lastName
-      }
-    },
-    setterMethods: {
-      fullName(value) {
-        const names = value.split(' ')
-        this.setDataValue('firstName', names.slice(0, -1).join(' '))
-        this.setDataValue('lastName', names.slice(-1).join(' '))
+        return this.firstName + ' ' + this.lastName
       }
     }
   }
@@ -72,9 +59,9 @@ const User = db.define(
 
 module.exports = User
 
-const compareAsync = (password, userPassword) => {
+const compareAsync = (password, hash) => {
   return new Promise(resolve => {
-    const valid = bcrypt.compareSync(password, userPassword)
+    const valid = bcrypt.compareSync(password, hash)
     resolve(valid)
   })
 }
@@ -89,12 +76,8 @@ User.prototype.validPassword = function(password) {
 /**
  * classMethods
  */
-User.generateSalt = function() {
-  return bcrypt.genSaltSync(5)
-}
-
-User.encryptPassword = function(plainText, salt) {
-  return bcrypt.hashSync(plainText, salt)
+User.encryptPassword = function(plainText, saltRounds) {
+  return bcrypt.hashSync(plainText, saltRounds)
 }
 
 /**
@@ -102,8 +85,7 @@ User.encryptPassword = function(plainText, salt) {
  */
 const setSaltAndPassword = function(user) {
   if (user.changed('password')) {
-    user.salt = User.generateSalt()
-    user.password = User.encryptPassword(user.password(), user.salt())
+    user.password = User.encryptPassword(user.password(), 5)
   }
 }
 
