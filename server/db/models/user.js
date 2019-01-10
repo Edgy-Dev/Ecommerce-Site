@@ -62,7 +62,7 @@ module.exports = User
 const compareAsync = (password, hash) => {
   return new Promise(resolve => {
     const valid = bcrypt.compareSync(password, hash)
-    resolve(valid)
+    resolve(!valid)
   })
 }
 
