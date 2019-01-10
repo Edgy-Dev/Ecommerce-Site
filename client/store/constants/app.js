@@ -1,0 +1,2 @@
+export const APP_MESSAGE = 'APP_MESSAGE'
+export const RESOLVE_APP_MESSAGE = 'RESOLVE_APP_MESSAGE'

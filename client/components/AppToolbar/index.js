@@ -2,8 +2,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 import {createStructuredSelector} from 'reselect'
 
-import {makeSelectCurrentUser, makeSelectCurrentTitle} from '../App/selectors'
-import {logout} from '../App/actions'
+import {logout} from '../../store/actions/app'
 
 import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
@@ -29,11 +28,11 @@ const AppToolbar = props => {
       <Toolbar disableGutters={!props.open}>
         <Hidden xsDown implementation="css">
           <img
-            src="/images/bigspool.png"
+            src="/images/edgydev.png"
             className={classNames(classes.menuButton, {
               [classes.hide]: props.open
             })}
-            alt="Bigspool"
+            alt="EdgyDev"
           />
         </Hidden>
         <Hidden smUp implementation="css">
@@ -49,7 +48,7 @@ const AppToolbar = props => {
           </IconButton>
         </Hidden>
 
-        <h2 className={classes.title}>{props.currentTitle}</h2>
+        <h2 className={classes.title}>Hello World</h2>
         <UserProfileOptions
           user={props.user}
           logout={props.logout}
@@ -60,11 +59,7 @@ const AppToolbar = props => {
   )
 }
 
-const mapStateToProps = () =>
-  createStructuredSelector({
-    user: makeSelectCurrentUser(),
-    currentTitle: makeSelectCurrentTitle()
-  })
+const mapStateToProps = () => createStructuredSelector({})
 
 const mapDispatchToProps = dispatch => ({
   logout: () => dispatch(logout())

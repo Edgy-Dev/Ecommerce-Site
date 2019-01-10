@@ -15,7 +15,6 @@ import ListItemText from '@material-ui/core/ListItemText'
 import classNames from 'classnames'
 
 import navigation from './navigation'
-import './Navbar.css'
 import styles from './styles'
 
 const NavItem = props => {
