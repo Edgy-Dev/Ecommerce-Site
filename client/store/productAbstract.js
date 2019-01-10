@@ -23,10 +23,10 @@ const getProducts = products => ({type: GET_INVENTORY, products})
  */
 export const retreiveProducts = () => async dispatch => {
   try {
-    const res = await axios.get('/productabstract')
+    const res = await axios.get('/api/productabstract')
     dispatch(getProducts(res.data))
   } catch (err) {
-    console.error(err)
+    console.log('hello')
   }
 }
 
@@ -36,7 +36,7 @@ export const retreiveProducts = () => async dispatch => {
 export default function(state = defaultState, action) {
   switch (action.type) {
     case GET_INVENTORY:
-      return [...state, (allproducts = action.products)]
+      return {...state, allProducts: action.products}
     default:
       return state
   }
