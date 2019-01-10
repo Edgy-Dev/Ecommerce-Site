@@ -1,34 +1,50 @@
 const router = require('express').Router()
-const User = require('../db/models/user')
-module.exports = router
+const {User} = require('../db/models')
+const {ResponseMessage} = require('../utils')
 
-router.post('/login', async (req, res, next) => {
-  try {
-    const user = await User.findOne({where: {email: req.body.email}})
-    if (!user) {
-      console.log('No such user found:', req.body.email)
-      res.status(401).send('Wrong username and/or password')
-    } else if (!user.correctPassword(req.body.password)) {
-      console.log('Incorrect password for user:', req.body.email)
-      res.status(401).send('Wrong username and/or password')
-    } else {
-      req.login(user, err => (err ? next(err) : res.json(user)))
-    }
-  } catch (err) {
-    next(err)
-  }
-})
+router.post('/login', require('./local'))
 
 router.post('/signup', async (req, res, next) => {
   try {
-    const user = await User.create(req.body)
-    req.login(user, err => (err ? next(err) : res.json(user)))
-  } catch (err) {
-    if (err.name === 'SequelizeUniqueConstraintError') {
-      res.status(401).send('User already exists')
+    /* Check if user exists and if password=paswordConfirm */
+    const user = await User.findOne({
+      where: {email: req.body.email}
+    })
+    if (user) {
+      res.status(400).send(
+        new ResponseMessage(null, {
+          name: 'RegistrationError',
+          message: 'Account already exists. Please log in.'
+        })
+      )
+    } else if (req.body.password !== req.body.passwordConfirm) {
+      return res.status(400).send(
+        new ResponseMessage(null, {
+          name: 'RegistrationError',
+          message: 'Password is not the same as password confirmation.'
+        })
+      )
     } else {
-      next(err)
+      /** Create and login user
+       * passport attaches req.login method
+       */
+      const newUser = await User.create({
+        firstName: req.body.firstName,
+        lastName: req.body.lastName,
+        email: req.body.email,
+        password: req.body.password
+      })
+      req.login(newUser, err => {
+        if (err) {
+          next(err)
+        } else {
+          next()
+        }
+      })
     }
+  } catch (err) {
+    err.name = err.name || 'RegistrationError'
+    next(err)
   }
 })
 
@@ -45,3 +61,5 @@ router.get('/me', (req, res) => {
 router.use('/google', require('./google'))
 
 router.use('/github', require('./github'))
+
+module.exports = router
