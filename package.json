@@ -37,6 +37,8 @@
   "author": "Fullstack Academy of Code",
   "license": "MIT",
   "dependencies": {
+    "@material-ui/core": "^3.8.3",
+    "@material-ui/icons": "^3.0.2",
     "axios": "^0.15.3",
     "bcrypt": "^3.0.3",
     "chalk": "^2.4.2",
@@ -61,10 +63,12 @@
     "react-dom": "^16.4.2",
     "react-redux": "^5.0.2",
     "react-router-dom": "^4.3.1",
+    "react-transition-group": "^2.5.2",
     "redux": "^3.6.0",
     "redux-logger": "^2.8.1",
     "redux-mock-store": "^1.5.3",
     "redux-thunk": "^2.3.0",
+    "reselect": "^4.0.0",
     "sequelize": "^4.38.0",
     "socket.io": "^2.1.1"
   },

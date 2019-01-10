@@ -1,15 +1,39 @@
 import React from 'react'
+import PropTypes from 'prop-types'
+import {withStyles} from '@material-ui/core/styles'
+import CssBaseline from '@material-ui/core/CssBaseline'
+import styles from './appStyles'
 
-import {Navbar} from './components'
+import {
+  AppSnackbar,
+  AppResourceLoading,
+  AppToolAndNavbar,
+  AppDialog
+} from './components'
 import Routes from './routes'
 
-const App = () => {
+const App = props => {
+  const {classes} = props
+
   return (
-    <div>
-      <Navbar />
-      <Routes />
+    <div className="app-wrapper">
+      <AppResourceLoading />
+      <div className={classes.contentWrapper}>
+        <CssBaseline />
+        <AppToolAndNavbar />
+        <main className={classes.content}>
+          <div className={classes.toolbar} />
+          <Routes />
+        </main>
+      </div>
+      <AppSnackbar />
+      <AppDialog />
     </div>
   )
 }
 
-export default App
+App.propTypes = {
+  classes: PropTypes.object.isRequired
+}
+
+export default withStyles(styles, {withTheme: true})(App)
