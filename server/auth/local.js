@@ -34,6 +34,7 @@ const localStategdy = new LocalStatedgy(
         id: user.id,
         firstName: user.firstName,
         lastName: user.lastName,
+        cart: user.cart,
         addresses: user.addresses
       })
     } catch (err) {
@@ -44,7 +45,7 @@ const localStategdy = new LocalStatedgy(
 
 passport.use(localStategdy)
 
-const handleSuccessfulLogin = (req, res) => {
+const handleSuccessfulLogin = (req, res, next) => {
   res.json(new ResponseMessage(req.user))
 }
 

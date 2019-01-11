@@ -1,8 +1,11 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import {createStructuredSelector} from 'reselect'
+import {isEmpty} from 'lodash'
 
-import {logout} from '../../store/actions/app'
+import history from '../../history'
+import {logout} from '../../store/actions/user'
+import {makeSelectUser} from '../../store/selectors/user'
 
 import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
@@ -10,6 +13,8 @@ import Hidden from '@material-ui/core/Hidden'
 import {withStyles} from '@material-ui/core/styles'
 import IconButton from '@material-ui/core/IconButton'
 import MenuIcon from '@material-ui/icons/Menu'
+import ShoppingCartIcon from '@material-ui/icons/ShoppingCart'
+import Button from '@material-ui/core/Button'
 import classNames from 'classnames'
 
 import UserProfileOptions from './UserProfileOptions'
@@ -17,6 +22,8 @@ import styles from './styles'
 
 const AppToolbar = props => {
   const {classes} = props
+
+  console.log(props.user)
   return (
     <AppBar
       position="fixed"
@@ -49,19 +56,50 @@ const AppToolbar = props => {
         </Hidden>
         <img className={classes.logo} src="/images/logo.svg" alt="EdgyDev" />
         <h2 className={classes.title}>Edgy Dev</h2>
-        <UserProfileOptions
-          user={props.user}
-          logout={props.logout}
-          className="user-profile"
-        />
+        {isEmpty(props.user) ? (
+          <React.Fragment>
+            <div className="vertical-divider" />
+            <Button
+              className={classes.loginBtn}
+              onClick={() => history.push('/register')}
+            >
+              REGISTER
+            </Button>
+            <div className="vertical-divider" />
+            <Button
+              className={classes.loginBtn}
+              onClick={() => history.push('/login')}
+            >
+              LOGIN
+            </Button>
+          </React.Fragment>
+        ) : (
+          <React.Fragment>
+            <div className="vertical-divider" />
+            <UserProfileOptions
+              user={props.user}
+              logout={props.logout}
+              className="user-profile"
+            />
+          </React.Fragment>
+        )}
+        <div className="vertical-divider" />
+        <IconButton color="inherit">
+          <ShoppingCartIcon />
+        </IconButton>
+        <span>
+          {(props.user && props.user.cart && props.user.cart.length) || 0}
+        </span>
+        <div className="vertical-divider" />
       </Toolbar>
     </AppBar>
   )
 }
 
-const mapStateToProps = () => ({
-  user: 'Duncan Gichimu'
-})
+const mapStateToProps = () =>
+  createStructuredSelector({
+    user: makeSelectUser()
+  })
 
 const mapDispatchToProps = dispatch => ({
   logout: () => dispatch(logout())

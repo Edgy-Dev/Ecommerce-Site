@@ -83,11 +83,7 @@ async function seed() {
   })
 
   for (let i = 0; i < totalUsers; i++) {
-    userModels[i].salt = User.generateSalt()
-    userModels[i].password = User.encryptPassword(
-      userModels[i].password(),
-      userModels[i].salt()
-    )
+    userModels[i].password = User.encryptPassword(userModels[i].password(), 5)
 
     await userModels[i].save()
     await addressModels[i].setUser(userModels[i])
@@ -97,7 +93,6 @@ async function seed() {
   for (let i = 0; i < totalUsers * 10; i++) {
     await orderModels[i].setUser(userModels[i % totalUsers])
   }
-
 
   console.log(`seeded ${totalUsers} users`)
   console.log(`seeded successfully`)
