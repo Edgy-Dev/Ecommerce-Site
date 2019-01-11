@@ -1,7 +1,11 @@
 import * as types from '../constants/app'
 
 const initialState = {
-  appMessage: '',
+  appMessage: {
+    message: '',
+    icon: '',
+    className: ''
+  },
   dialogOptions: defaultAppDialogOptions(),
   appLoading: false
 }
@@ -9,9 +13,20 @@ const initialState = {
 const appReducer = (state = initialState, action) => {
   switch (action.type) {
     case types.APP_MESSAGE:
-      return {...state, appMessage: action.message}
+      return {...state, appMessage: action.messageOptions}
     case types.RESOLVE_APP_MESSAGE:
-      return {...state, appMessage: ''}
+      return {
+        ...state,
+        appMessage: {
+          message: '',
+          icon: '',
+          className: ''
+        }
+      }
+    case types.RESOURCE_LOADING:
+      return {...state, appLoading: true}
+    case types.RESOURCE_LOADING_COMPLETE:
+      return {...state, appLoading: false}
     case types.OPEN_APP_DIALOG:
       return {...state, dialogOptions: action.dialogOptions}
     case types.CLOSE_APP_DIALOG:

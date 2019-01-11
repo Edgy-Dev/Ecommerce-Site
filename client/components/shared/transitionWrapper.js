@@ -1,9 +1,7 @@
 import React from 'react'
 import {CSSTransition} from 'react-transition-group'
 
-import './transitionStyle.css'
-
-const withTransition = WrappedComponent => {
+const WithTransition = WrappedComponent => {
   const duration = 600
 
   return class transition extends React.Component {
@@ -33,4 +31,4 @@ const withTransition = WrappedComponent => {
   }
 }
 
-export default withTransition
+export default WithTransition

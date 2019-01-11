@@ -4,14 +4,16 @@ import {withRouter, Route, Switch} from 'react-router-dom'
 import PropTypes from 'prop-types'
 import {
   Login,
-  Signup,
+  Register,
   UserHome,
   AllProductView,
   SingleProductView
 } from './components'
-import {me} from './store'
 import {retreiveProducts} from './store/productAbstract'
-
+import ProtectedRoute from './components/shared/ProtectedRoute'
+import HasProtectionRoute from './components/shared/HasProtectionRoute'
+import {createStructuredSelector} from 'reselect'
+import {makeSelectUser} from './store/selectors/user'
 /**
  * COMPONENT
  */
@@ -21,22 +23,14 @@ class Routes extends Component {
   }
 
   render() {
-    const {isLoggedIn} = this.props
     return (
       <Switch>
-        {/* Routes placed here are available to all visitors */}
-        <Route path="/login" component={Login} />
-        <Route path="/signup" component={Signup} />
+        {/* Routes placed here are only available after logging in */}
+        <HasProtectionRoute path="/login" component={Login} />
+        <HasProtectionRoute path="/register" component={Register} />
         <Route exact path="/products" component={AllProductView} />
         <Route exact path="/products/:id" component={SingleProductView} />
-        {isLoggedIn && (
-          <Switch>
-            {/* Routes placed here are only available after logging in */}
-            <Route path="/home" component={UserHome} />
-          </Switch>
-        )}
-        {/* Displays our Login component as a fallback */}
-        <Route component={Login} />
+        <Route path="/" component={UserHome} />
       </Switch>
     )
   }
@@ -45,13 +39,11 @@ class Routes extends Component {
 /**
  * CONTAINER
  */
-const mapState = state => {
-  return {
-    // Being 'logged in' for our purposes will be defined has having a state.user that has a truthy id.
-    // Otherwise, state.user will be an empty object, and state.user.id will be falsey
-    isLoggedIn: !!state.user.id
-  }
-}
+
+const mapState = () =>
+  createStructuredSelector({
+    currentUser: makeSelectUser()
+  })
 
 const mapDispatch = dispatch => {
   return {
@@ -69,6 +61,5 @@ export default withRouter(connect(mapState, mapDispatch)(Routes))
  * PROP TYPES
  */
 Routes.propTypes = {
-  loadInitialData: PropTypes.func.isRequired,
-  isLoggedIn: PropTypes.bool.isRequired
+  loadInitialData: PropTypes.func.isRequired
 }

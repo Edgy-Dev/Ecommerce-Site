@@ -29,6 +29,11 @@ const styles = theme => ({
   logo: {
     length: '60px',
     width: '60px'
+  },
+  loginBtn: {
+    height: 64,
+    width: 80,
+    padding: '0 10px'
   }
 })
 

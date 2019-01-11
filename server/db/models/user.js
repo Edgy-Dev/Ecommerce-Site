@@ -46,7 +46,10 @@ const User = db.define(
         notEmpty: true
       }
     },
-    cart: Sequelize.ARRAY(Sequelize.JSON)
+    cart: {
+      type: Sequelize.ARRAY(Sequelize.JSON),
+      defaultValue: []
+    }
   },
   {
     getterMethods: {
