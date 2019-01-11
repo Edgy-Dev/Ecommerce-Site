@@ -10,7 +10,6 @@ class SingleProductView extends Component {
       currentProduct: {...this.props.displayedProducts[0]}
     }
     this.handleChange = this.handleChange.bind(this)
-    console.log(this.state.currentProduct)
   }
   handleChange(event) {
     const newProduct = this.state.currentProduct

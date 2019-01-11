@@ -23,7 +23,6 @@ import styles from './styles'
 const AppToolbar = props => {
   const {classes} = props
 
-  console.log(props.user)
   return (
     <AppBar
       position="fixed"

@@ -9,6 +9,7 @@ import {
   AllProductView,
   SingleProductView
 } from './components'
+import {me} from './store/actions/user'
 import {retreiveProducts} from './store/productAbstract'
 import ProtectedRoute from './components/shared/ProtectedRoute'
 import HasProtectionRoute from './components/shared/HasProtectionRoute'
