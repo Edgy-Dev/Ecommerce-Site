@@ -1,3 +1,4 @@
+import {isEmpty} from 'lodash'
 import * as types from '../constants/user'
 import {request} from './utils'
 import history from '../../history'
@@ -9,6 +10,12 @@ export const addUser = user => ({
 })
 
 export const removeUser = () => ({type: types.REMOVE_USER})
+
+export const addAnonUser = user => ({
+  type: types.ADD_ANON_USER
+})
+
+export const removeAnonUser = () => ({type: types.REMOVE_ANON_USER})
 
 export const loginError = error => ({type: types.LOGIN_ERROR, error})
 
@@ -25,7 +32,11 @@ export const resolveRegisterError = () => ({
 /* thunk creators */
 export const me = () => async dispatch => {
   request('/auth/me', {}, dispatch, data => {
-    dispatch(addUser(data))
+    if (isEmpty(data)) {
+      dispatch(addAnonUser())
+    } else {
+      dispatch(addUser(data))
+    }
   })
 }
 
