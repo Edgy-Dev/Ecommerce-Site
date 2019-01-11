@@ -21,6 +21,15 @@ export const loginError = error => ({type: types.LOGIN_ERROR, error})
 
 export const registerError = error => ({type: types.REGISTER_ERROR, error})
 
+export const changePasswordError = error => ({
+  type: types.CHANGE_PASSWORD_ERROR,
+  error
+})
+
+export const resolveChangePasswordError = () => ({
+  type: types.RESOLVE_CHANGE_PASSWORD_ERROR
+})
+
 export const resolveLoginError = () => ({
   type: types.RESOLVE_LOGIN_ERROR
 })
@@ -63,6 +72,27 @@ export const auth = ({email, password, method}) => dispatch => {
   )
 }
 
+export const changePassword = data => dispatch => {
+  dispatch(resolveChangePasswordError())
+
+  request(
+    '/auth/change-password',
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    },
+    dispatch,
+    () => {
+      Promise.resolve('Success')
+    },
+    error => {
+      dispatch(changePasswordError(error.message))
+    }
+  )
+}
 export const register = data => dispatch => {
   dispatch(resolveRegisterError())
 

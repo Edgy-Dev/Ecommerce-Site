@@ -39,7 +39,7 @@ function addAnonUser(state) {
   if (!user) {
     user = {
       cart: [],
-      addresses: [{}]
+      addresses: []
     }
     localStorage.setItem('anonUser', JSON.stringify(user))
   }
