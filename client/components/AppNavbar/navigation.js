@@ -9,7 +9,7 @@ export default [
     id: 2,
     label: 'Long Sleeve Shirts',
     icon: 'shopping_cart',
-    to: '/porducts/longsleeves'
+    to: '/products/longsleeves'
   },
   {
     id: 3,
@@ -22,5 +22,10 @@ export default [
     label: 'Hoodies',
     icon: 'account_balance',
     to: '/products/hoodies'
+  },
+  {
+    id: 5,
+    label: 'All Products',
+    to: '/products'
   }
 ]

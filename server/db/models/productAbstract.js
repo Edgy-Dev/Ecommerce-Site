@@ -10,11 +10,9 @@ const ProductAbstract = db.define('productAbstract', {
     }
   },
   category: {
-    type: Sequelize.STRING,
+    type: Sequelize.ARRAY(Sequelize.STRING),
     allowNull: false,
-    validate: {
-      len: {args: 1, msg: 'provide a category'}
-    }
+    defaultValue: ['Tee', 'Long Sleeve', 'Hoodie']
   },
   price: {
     type: Sequelize.INTEGER,
@@ -24,11 +22,16 @@ const ProductAbstract = db.define('productAbstract', {
   },
   color: {
     type: Sequelize.ARRAY(Sequelize.STRING),
-    defaultValue: ['white', 'black', 'gray', 'red', 'blue', 'green']
+    defaultValue: ['White', 'Black', 'Gray', 'Red', 'Blue', 'Green']
   },
   size: {
     type: Sequelize.ARRAY(Sequelize.STRING),
     defaultValue: ['Small', 'Medium', 'Large', 'XLarge']
+  },
+  thumbImage: {
+    type: Sequelize.STRING,
+    defaultValue:
+      'http://dickensgifts.com/thumbnail.asp?file=assets/images/27483.jpg&maxx=300&maxy=0'
   },
   description: {
     type: Sequelize.TEXT,
