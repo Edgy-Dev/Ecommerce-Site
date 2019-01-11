@@ -34,15 +34,8 @@ class SingleProductView extends Component {
         </ul>
         <form>
           <label htmlFor="category" name="category">
-            Type:
+            Type: {product.category}
           </label>
-          <select onChange={this.handleChange} name="category">
-            {product.category.map(category => (
-              <option name="category" value={category}>
-                {category}
-              </option>
-            ))}
-          </select>
           <label htmlFor="size" name="size">
             Size:
           </label>
