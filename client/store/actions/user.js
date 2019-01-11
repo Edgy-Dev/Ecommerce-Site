@@ -25,7 +25,6 @@ export const resolveRegisterError = () => ({
 /* thunk creators */
 export const me = () => async dispatch => {
   request('/auth/me', {}, dispatch, data => {
-    console.log(data)
     dispatch(addUser(data))
   })
 }
@@ -67,7 +66,6 @@ export const register = data => dispatch => {
     },
     dispatch,
     user => {
-      console.log(user, 'user was return?')
       dispatch(addUser(user))
       history.push('/')
     },

@@ -14,7 +14,6 @@ export const request = (url, options, dispatch, success, fail) => {
       return response.json()
     })
     .then(result => {
-      console.log(result)
       if (result.error) {
         if (fail) {
           fail(result.error)
