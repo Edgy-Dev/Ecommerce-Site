@@ -6,16 +6,16 @@ import {isEmpty} from 'lodash'
 
 import {makeSelectUser} from '../../store/selectors/user'
 
-const ProtectedRoute = ({
+const HasProtectionRoute = ({
   component: Component,
   currentUser,
   dispatch,
   ...rest
 }) => {
-  if (!isEmpty(currentUser)) {
+  if (isEmpty(currentUser)) {
     return <Route {...rest} render={props => <Component {...props} />} />
   } else {
-    return <Route {...rest} render={_ => <Redirect to="/login" />} />
+    return <Route {...rest} render={_ => <Redirect to="/" />} />
   }
 }
 
@@ -23,4 +23,4 @@ const mapStateToProps = createStructuredSelector({
   currentUser: makeSelectUser()
 })
 
-export default connect(mapStateToProps)(ProtectedRoute)
+export default connect(mapStateToProps)(HasProtectionRoute)

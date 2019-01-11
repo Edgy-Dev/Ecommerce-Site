@@ -20,18 +20,18 @@ const AppSnackbar = props => {
           vertical: 'bottom',
           horizontal: 'center'
         }}
-        open={!!props.appMessage}
+        open={!!props.appMessage.message}
         autoHideDuration={6000}
         onClose={props.resolveAppMessage}
       >
         <SnackbarContent
-          className={props.className}
+          className={props.appMessage.className}
           message={
             <span className="snackbar-message">
               <Icon className="snackbar-icon">
-                {props.iconName || 'message'}
+                {props.appMessage.icon || 'message'}
               </Icon>
-              {props.appMessage}
+              {props.appMessage.message}
             </span>
           }
           action={[
@@ -60,7 +60,7 @@ const mapDistpatchToProps = dispatch => ({
 })
 
 AppSnackbar.propTypes = {
-  appMessage: PropTypes.string.isRequired,
+  appMessage: PropTypes.object.isRequired,
   resolveAppMessage: PropTypes.func.isRequired
 }
 

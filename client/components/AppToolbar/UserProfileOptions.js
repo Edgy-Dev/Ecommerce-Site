@@ -79,7 +79,7 @@ class UserProfileOptions extends React.Component {
               alt="/images/profile.jpg"
             />
             <Typography className={classes.user} variant="subtitle1">
-              {this.props.user}
+              {this.props.user.firstName}
             </Typography>
             <KeyboardArrowDown style={{marginLeft: '5px'}} />
           </Button>
