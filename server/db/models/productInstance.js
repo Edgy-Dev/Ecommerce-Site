@@ -16,6 +16,11 @@ const ProductInstance = db.define('productInstance', {
       len: {args: 1, msg: 'product must have a category'}
     }
   },
+  thumbImage: {
+    type: Sequelize.STRING,
+    defaultValue:
+      'http://dickensgifts.com/thumbnail.asp?file=assets/images/27483.jpg&maxx=300&maxy=0'
+  },
   price: {
     type: Sequelize.INTEGER,
     validate: {

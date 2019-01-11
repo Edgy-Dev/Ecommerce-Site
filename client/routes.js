@@ -2,8 +2,13 @@ import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {withRouter, Route, Switch} from 'react-router-dom'
 import PropTypes from 'prop-types'
-import {Login, Signup, UserHome, Products, Register} from './components'
-import {me} from './store/actions/user'
+import {
+  Login,
+  Register,
+  UserHome,
+  AllProductView,
+  SingleProductView
+} from './components'
 import {retreiveProducts} from './store/productAbstract'
 import ProtectedRoute from './components/shared/ProtectedRoute'
 import HasProtectionRoute from './components/shared/HasProtectionRoute'
@@ -23,6 +28,8 @@ class Routes extends Component {
         {/* Routes placed here are only available after logging in */}
         <HasProtectionRoute path="/login" component={Login} />
         <HasProtectionRoute path="/register" component={Register} />
+        <Route exact path="/products" component={AllProductView} />
+        <Route exact path="/products/:id" component={SingleProductView} />
         <Route path="/" component={UserHome} />
       </Switch>
     )

@@ -8,7 +8,8 @@ import {
   AppSnackbar,
   AppResourceLoading,
   AppToolAndNavbar,
-  AppDialog
+  AppDialog,
+  AllProducts
 } from './components'
 import Routes from './routes'
 
