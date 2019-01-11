@@ -15,7 +15,7 @@ export default [
     id: 3,
     label: 'Short Sleeve Shirts',
     icon: 'monetization_on',
-    to: '/products/shortsleeves'
+    to: '/products/tees'
   },
   {
     id: 4,

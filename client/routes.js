@@ -7,6 +7,9 @@ import {
   Register,
   UserHome,
   AllProductView,
+  AllHoodieView,
+  AllLongsleeveView,
+  AllTeeView,
   SingleProductView
 } from './components'
 import {me} from './store/actions/user'
@@ -30,6 +33,13 @@ class Routes extends Component {
         <HasProtectionRoute path="/login" component={Login} />
         <HasProtectionRoute path="/register" component={Register} />
         <Route exact path="/products" component={AllProductView} />
+        <Route exact path="/products/tees" component={AllTeeView} />
+        <Route exact path="/products/hoodies" component={AllHoodieView} />
+        <Route
+          exact
+          path="/products/longsleeves"
+          component={AllLongsleeveView}
+        />
         <Route exact path="/products/:id" component={SingleProductView} />
         <Route path="/" component={UserHome} />
       </Switch>
