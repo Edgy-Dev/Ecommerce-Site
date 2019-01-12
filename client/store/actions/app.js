@@ -29,3 +29,28 @@ export const resourceLoading = () => ({
 export const resourceLoadingComplete = () => ({
   type: types.RESOURCE_LOADING_COMPLETE
 })
+
+export const openTempNavbar = () => ({
+  type: types.OPEN_TEMP_NAVBAR
+})
+
+export const closeTempNavbar = () => ({
+  type: types.CLOSE_TEMP_NAVBAR
+})
+
+export const openPermNavbar = () => ({
+  type: types.OPEN_PERM_NAVBAR
+})
+
+export const closePermNavbar = () => ({
+  type: types.CLOSE_PERM_NAVBAR
+})
+
+export const setNavbar = config => ({
+  type: types.SET_NAVBAR,
+  config
+})
+
+export const resetNavbar = () => ({
+  type: types.RESET_NAVBAR
+})

@@ -23,8 +23,11 @@ const styles = theme => ({
   hide: {
     display: 'none'
   },
-  title: {
-    flexGrow: 1
+  categoryBtns: {
+    flexGrow: 1,
+    marginLeft: 10,
+    display: 'flex',
+    justifyContent: 'space-around'
   },
   logo: {
     length: '60px',
@@ -34,6 +37,19 @@ const styles = theme => ({
     height: 64,
     width: 80,
     padding: '0 10px'
+  },
+  title: {
+    textDecoration: 'none',
+    color: '#3f51b5'
+  },
+  link: {
+    color: '#3f51b5',
+    '&:hover': {
+      textDecoration: 'underline'
+    },
+    [theme.breakpoints.down('sm')]: {
+      display: 'none'
+    }
   }
 })
 

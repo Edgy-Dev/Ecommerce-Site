@@ -5,7 +5,8 @@ const initialState = {
   currentUser: {},
   anonUser: {},
   loginError: '',
-  registerError: ''
+  registerError: '',
+  changePasswordError: ''
 }
 
 /*eslint-disable complexity*/
@@ -15,20 +16,28 @@ const userReducer = (state = initialState, action) => {
       return {...state, currentUser: action.user}
     case types.REMOVE_USER:
       return {...state, currentUser: {}}
+
     case types.ADD_ANON_USER:
       return addAnonUser()
     case types.REMOVE_ANON_USER:
       return removeAnonUser()
     case types.RESET_ANON_USER_CART:
       return resetAnonUserCart()
+
     case types.LOGIN_ERROR:
       return {...state, loginError: action.error}
     case types.RESOLVE_LOGIN_ERROR:
       return {...state, loginError: ''}
+
     case types.REGISTER_ERROR:
       return {...state, registerError: action.error}
     case types.RESOLVE_REGISTER_ERROR:
       return {...state, registerError: ''}
+
+    case types.CHANGE_PASSWORD_ERROR:
+      return {...state, changePasswordError: action.error}
+    case types.RESOLVE_CHANGE_PASSWORD_ERROR:
+      return {...state, changePasswordError: ''}
     default:
       return state
   }

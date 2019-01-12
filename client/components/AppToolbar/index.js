@@ -1,6 +1,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import {createStructuredSelector} from 'reselect'
+import {NavLink, Link} from 'react-router-dom'
 import {isEmpty} from 'lodash'
 
 import history from '../../history'
@@ -16,7 +17,6 @@ import MenuIcon from '@material-ui/icons/Menu'
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart'
 import Button from '@material-ui/core/Button'
 import classNames from 'classnames'
-
 import UserProfileOptions from './UserProfileOptions'
 import styles from './styles'
 
@@ -24,37 +24,47 @@ const AppToolbar = props => {
   const {classes} = props
 
   return (
-    <AppBar
-      position="fixed"
-      className={classNames(classes.appBar, {
-        [classes.appBarShift]: props.open
-      })}
-      color="default"
-    >
-      <Toolbar disableGutters={!props.open}>
-        <Hidden xsDown implementation="css">
+    <AppBar position="fixed" color="default">
+      <Toolbar disableGutters={true}>
+        <Hidden {...props.nameHidden} implementation="css">
           <img
             src="/images/logo.svg"
             className={classNames(classes.menuButton, {
-              [classes.hide]: props.open
+              [classes.hide]: props.tempOpen
             })}
             alt="EdgyDev"
           />
         </Hidden>
-        <Hidden smUp implementation="css">
+        <Hidden {...props.menuHidden} implementation="css">
           <IconButton
             color="inherit"
             aria-label="Open drawer"
             onClick={props.handleDrawerOpen}
             className={classNames(classes.menuButton, {
-              [classes.hide]: props.open
+              [classes.hide]: props.tempOpen
             })}
           >
             <MenuIcon />
           </IconButton>
         </Hidden>
         <img className={classes.logo} src="/images/logo.svg" alt="EdgyDev" />
-        <h2 className={classes.title}>Edgy Dev</h2>
+        <Link to="/" className={classes.title}>
+          <h2>Edgy Dev</h2>
+        </Link>
+        <div className={classes.categoryBtns}>
+          <NavLink className={classes.link} to="/products">
+            All Products
+          </NavLink>
+          <NavLink className={classes.link} to="/tees">
+            Long Sleeves
+          </NavLink>
+          <NavLink className={classes.link} to="/long-sleeves">
+            Short Sleeves
+          </NavLink>
+          <NavLink className={classes.link} to="hoodies">
+            Hoodies
+          </NavLink>
+        </div>
         {isEmpty(props.user) ? (
           <React.Fragment>
             <div className="vertical-divider" />

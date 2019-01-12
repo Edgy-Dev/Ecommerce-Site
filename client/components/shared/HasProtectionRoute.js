@@ -9,7 +9,7 @@ import {makeSelectUser} from '../../store/selectors/user'
 const HasProtectionRoute = ({
   component: Component,
   currentUser,
-  dispatch,
+  dispatch, // don't pass dispatch
   ...rest
 }) => {
   if (isEmpty(currentUser)) {

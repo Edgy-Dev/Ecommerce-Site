@@ -13,7 +13,6 @@ import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
 import classNames from 'classnames'
 
-import navigation from './navigation'
 import styles from './styles'
 
 const NavItem = props => {
@@ -65,43 +64,48 @@ const SideNav = props => {
 
 const Navbar = props => {
   const {classes} = props
-  const navItems = navigation
+  const navItems = props.navigation
 
   return (
     <React.Fragment>
-      <Hidden xsDown implementation="js">
+      <Hidden {...props.permHidden} implementation="js">
         <Drawer
-          variant="permanent"
-          className={classNames(classes.drawer, classes.drawerOpen)}
+          variant="persistent"
+          className={classNames(classes.drawer, {
+            [classes.drawerOpen]: props.permOpen,
+            [classes.drawerClose]: !props.permOpen
+          })}
           classes={{
-            paper: classNames(classes.drawerOpen)
+            paper: classNames({
+              [classes.drawerOpen]: props.permOpen,
+              [classes.drawerClose]: !props.permOpen
+            })
           }}
-          open
+          open={props.permOpen}
         >
           <SideNav
             className={classes.sidenav}
             navItems={navItems}
             classes={classes}
             variant="permanent"
-            handleDrawerDock={props.toggleDrawerDock}
           />
         </Drawer>
       </Hidden>
-      <Hidden smUp implementation="js">
+      <Hidden {...props.tempHidden} implementation="js">
         <Drawer
           variant="temporary"
           className={classNames(classes.drawer, {
-            [classes.drawerOpen]: props.open,
-            [classes.drawerClose]: !props.open
+            [classes.drawerOpen]: props.tempOpen,
+            [classes.drawerClose]: !props.tempOpen
           })}
           classes={{
             paper: classNames({
-              [classes.drawerOpen]: props.open,
-              [classes.drawerClose]: !props.open
+              [classes.drawerOpen]: props.tempOpen,
+              [classes.drawerClose]: !props.tempOpen
             })
           }}
           onClose={props.handleDrawerClose}
-          open={props.open}
+          open={props.tempOpen}
         >
           <SideNav
             className={classes.sidenav}

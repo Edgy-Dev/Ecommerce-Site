@@ -56,6 +56,10 @@ form div {
   padding: 0 8px;
 }
 
+.active {
+  color: #000000;
+}
+
 /* Transition styles */
 .component-enter {
   opacity: 0.01;

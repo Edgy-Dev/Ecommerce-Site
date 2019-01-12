@@ -76,7 +76,7 @@ class UserProfileOptions extends React.Component {
             <img
               className={classes.profileLogo}
               src="/images/profile.jpg"
-              alt="/images/profile.jpg"
+              alt="me"
             />
             <Typography className={classes.user} variant="subtitle1">
               {this.props.user.firstName}

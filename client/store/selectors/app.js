@@ -16,3 +16,8 @@ export const makeSelectAppDialogOptions = () =>
   createSelector(selectApp, appState => {
     return appState.dialogOptions
   })
+
+export const makeSelectNavbarConfig = () =>
+  createSelector(selectApp, navbarState => {
+    return navbarState.navbarConfig
+  })

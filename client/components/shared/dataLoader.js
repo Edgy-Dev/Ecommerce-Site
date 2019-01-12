@@ -4,7 +4,7 @@ import {createStructuredSelector} from 'reselect'
 import {connect} from 'react-redux'
 import React from 'react'
 
-import ContentLoading from './LoadingIndicators/ContentLoading'
+import ContentLoading from './PageLoading/MaterialProgress'
 
 export function LoaderFn(dataName, loaderFn, dataLoaded) {
   this.dataName = dataName
@@ -12,7 +12,7 @@ export function LoaderFn(dataName, loaderFn, dataLoaded) {
   this.dataLoaded = dataLoaded
 }
 
-const dataLoader = (title, loaders) => WrappedComponent => {
+const dataLoader = loaders => WrappedComponent => {
   // Holds selectors that check if data has loaded
   const selectors = loaders.reduce((map, loader) => {
     map[loader.dataName + 'Loaded'] = loader.dataLoaded()
@@ -22,11 +22,11 @@ const dataLoader = (title, loaders) => WrappedComponent => {
 
   // Holds dispatchers used to load data
   const mapDispatchToProps = dispatch => {
-    return loaders.reduce((map, loader) => {
+    return loaders.reduce((map, loader, i) => {
       map['fetch' + capitalize(loader.dataName)] = () =>
         dispatch(loader.loaderFn())
       return map
-    })
+    }, {})
   }
 
   return connect(mapStateToProps, mapDispatchToProps)(
@@ -34,12 +34,17 @@ const dataLoader = (title, loaders) => WrappedComponent => {
       constructor(props) {
         super(props)
         this.state = {
-          loading: true
+          loading: !this.dataHasLoaded()
         }
       }
 
+      dataHasLoaded() {
+        return loaders
+          .map(loader => this.props[loader.dataName + 'Loaded'])
+          .every(dataLoad => dataLoad)
+      }
+
       componentDidMount() {
-        this.props.setTitle(title)
         const dataLoaded = loaders
           .map(loader => this.props[loader.dataName + 'Loaded'])
           .every(dataLoad => dataLoad)
@@ -51,37 +56,36 @@ const dataLoader = (title, loaders) => WrappedComponent => {
         }
       }
 
-      componentDidUpdate() {
-        const dataLoaded = loaders
-          .map(loader => this.props[loader.dataName + 'Loaded'])
-          .every(dataLoad => dataLoad)
+      // componentDidUpdate() {
+      //   console.log(this.props)
+      //   const dataLoaded = loaders
+      //     .map(loader => this.props[loader.dataName + 'Loaded'])
+      //     .every(dataLoad => dataLoad)
 
-        if (dataLoaded && this.state.loading) {
-          this.setState({loading: false})
-        }
-      }
-
-      componentWillUnmount() {
-        this.props.resetTitle()
-      }
+      //   if (dataLoaded && this.state.loading) {
+      //     this.setState({loading: false})
+      //   }
+      // }
 
       loadData() {
         const dataLoaders = []
         loaders.forEach(loader => {
-          const dataLoaded = loader.dataName + 'Loaded'
+          const dataLoadedName = loader.dataName + 'Loaded'
           const loaderFn = 'fetch' + capitalize(loader.dataName)
-          if (!this.props[dataLoaded]) {
+          if (!this.props[dataLoadedName]) {
             dataLoaders.push(this.props[loaderFn])
           }
         })
 
-        this.executeLoaders(dataLoaders)
+        this.executeLoaders(dataLoaders).then(() => {
+          this.setState({loading: false})
+        })
       }
 
-      executeLoaders(dataLoaders) {
-        dataLoaders.forEach(loader => {
-          loader()
-        })
+      async executeLoaders(dataLoaders) {
+        for (let i = 0; i < dataLoaders.length; i++) {
+          await dataLoaders[i]()
+        }
       }
 
       render() {

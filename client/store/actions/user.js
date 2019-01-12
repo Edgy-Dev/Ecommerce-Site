@@ -39,8 +39,8 @@ export const resolveRegisterError = () => ({
 })
 
 /* thunk creators */
-export const me = () => async dispatch => {
-  request('/auth/me', {}, dispatch, data => {
+export const me = () => dispatch => {
+  return request('/auth/me', {}, dispatch, data => {
     if (isEmpty(data)) {
       dispatch(addAnonUser())
     } else {

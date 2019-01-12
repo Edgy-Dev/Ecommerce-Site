@@ -9,7 +9,7 @@ export const errorMessage = error => ({
 export const request = (url, options, dispatch, success, fail) => {
   dispatch(resourceLoading())
 
-  fetch(url, options)
+  return fetch(url, options)
     .then(response => {
       return response.json()
     })
@@ -25,7 +25,6 @@ export const request = (url, options, dispatch, success, fail) => {
       }
     })
     .catch(error => {
-      console.error(error)
       dispatch(appMessage(errorMessage(error)))
     })
     .finally(() => {
