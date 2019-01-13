@@ -43,6 +43,13 @@ const styles = theme => ({
     width: '50px',
     height: '50px',
     marginRight: '15px'
+  },
+  title: {
+    textDecoration: 'none',
+    color: '#3f51b5',
+    [theme.breakpoints.down('xs')]: {
+      fontSize: '0.7em'
+    }
   }
 })
 

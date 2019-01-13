@@ -33,11 +33,18 @@ if (process.env.NODE_ENV === 'test') {
  */
 
 // passport registration
-passport.serializeUser((user, done) => done(null, user))
+passport.serializeUser((user, done) => done(null, user.id))
 
-passport.deserializeUser(async (safeUserModel, done) => {
+passport.deserializeUser(async (userId, done) => {
   try {
-    const user = await db.models.user.findById(safeUserModel.id)
+    const user = await db.models.user.findById(userId, {
+      include: [
+        {
+          model: db.models.address,
+          attributes: {exclude: ['createdAt', 'updatedAt', 'userId']}
+        }
+      ]
+    })
     done(null, user)
   } catch (err) {
     done(err)

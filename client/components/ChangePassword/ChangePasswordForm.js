@@ -13,23 +13,21 @@ const Form = props => {
         props.handleSubmit(event, props.values, props.changePassword)
       }
     >
-      <input type="hidden" value={props.email} onChange={props.handleChange} />
-      <div style={{marginBottom: '25px'}}>
-        <Field
-          name="oldPassword"
-          placeholder="Enter current password"
-          formFieldProps={{
-            label: 'password',
-            type: 'password',
-            value: props.values.oldPassword,
-            onChange: props.handleChange
-          }}
-          Component={Input}
-          renderFormError={() => (
-            <FieldError errors={props.formErrors.oldPassword} />
-          )}
-        />
-      </div>
+      <Field
+        name="oldPassword"
+        placeholder="Enter current password"
+        formFieldProps={{
+          label: 'password',
+          type: 'password',
+          value: props.values.oldPassword,
+          onChange: props.handleChange
+        }}
+        Component={Input}
+        renderFormError={() => (
+          <FieldError errors={props.formErrors.oldPassword} />
+        )}
+      />
+      <div style={{margin: '12px 0'}} />
       <Field
         name="password"
         placeholder="Enter password"
@@ -82,13 +80,11 @@ const Form = props => {
 const ChangePasswordForm = FormBuilder({
   state: {
     values: {
-      email: '',
       oldPassword: '',
       password: '',
       passwordConfirm: ''
     },
     formErrors: {
-      email: [],
       oldPassword: [],
       password: [],
       passwordConfirm: []

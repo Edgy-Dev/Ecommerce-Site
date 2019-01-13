@@ -15,9 +15,7 @@ import dataLoader, {LoaderFn} from '../shared/dataLoader'
 
 class ToolNavbar extends React.Component {
   render() {
-    console.log('theprops', this.props)
     const {config} = this.props
-
     return (
       <React.Fragment>
         <AppToolbar

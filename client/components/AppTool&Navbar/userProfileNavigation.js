@@ -1,20 +1,23 @@
+import {logout} from '../../store/actions/user'
+
 export default [
   {
     id: 1,
     label: 'Orders',
     icon: 'shopping_cart',
-    to: '/user-profiles'
+    to: '/account/orders'
   },
   {
     id: 2,
-    label: 'Shipping Addresses',
-    icon: 'home',
-    to: '/user-profile/addreses'
+    label: 'Account Settings',
+    icon: 'account_circle',
+    to: '/account'
   },
   {
-    id: 3,
-    label: 'Payment Info',
-    icon: 'monetization_on',
-    to: '/user-profile/addreses'
+    id: 5,
+    label: 'Logout',
+    icon: 'power_settings_new',
+    to: '',
+    dispatcher: logout
   }
 ]

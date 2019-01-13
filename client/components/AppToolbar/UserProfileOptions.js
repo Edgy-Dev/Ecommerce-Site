@@ -6,6 +6,7 @@ import Typography from '@material-ui/core/Typography'
 import KeyboardArrowDown from '@material-ui/icons/KeyboardArrowDown'
 import AccountCircle from '@material-ui/icons/AccountCircle'
 import PowerSettingsNew from '@material-ui/icons/PowerSettingsNew'
+import ShoppingBasket from '@material-ui/icons/ShoppingBasket'
 import {withStyles} from '@material-ui/core/styles'
 
 import history from '../../history'
@@ -13,7 +14,10 @@ import CenteredMenu from '../shared/Menus/CenteredMenu'
 
 const styles = theme => ({
   root: {
-    display: 'flex'
+    display: 'flex',
+    [theme.breakpoints.down('xs')]: {
+      display: 'none'
+    }
   },
   paper: {
     marginRight: theme.spacing.unit * 2
@@ -27,10 +31,7 @@ const styles = theme => ({
     borderRadius: '50%'
   },
   user: {
-    textTransform: 'none !important',
-    [theme.breakpoints.down('xs')]: {
-      display: 'none'
-    }
+    textTransform: 'none !important'
   }
 })
 
@@ -51,8 +52,8 @@ class UserProfileOptions extends React.Component {
     this.handleClose()
   }
 
-  handleViewProfile = () => {
-    history.push('/user-profile')
+  goTo = url => {
+    history.push(url)
     this.handleClose()
   }
 
@@ -78,7 +79,7 @@ class UserProfileOptions extends React.Component {
               src="/images/profile.jpg"
               alt="me"
             />
-            <Typography className={classes.user} variant="subtitle1">
+            <Typography variant="subtitle1" className={classes.user}>
               {this.props.user.firstName}
             </Typography>
             <KeyboardArrowDown style={{marginLeft: '5px'}} />
@@ -90,11 +91,18 @@ class UserProfileOptions extends React.Component {
             handleClose={this.handleClose}
           >
             <MenuItem
-              onClick={this.handleViewProfile}
+              onClick={() => this.goTo('/account/orders')}
+              className={classes.profileOption}
+            >
+              <ShoppingBasket className={classes.profileIcon} />
+              <span>Orders</span>
+            </MenuItem>
+            <MenuItem
+              onClick={() => this.goTo('/account')}
               className={classes.profileOption}
             >
               <AccountCircle className={classes.profileIcon} />
-              <span>Profile</span>
+              <span>Account Settings</span>
             </MenuItem>
             <MenuItem
               onClick={this.handleLogoutOut}

@@ -1,15 +1,11 @@
 import React from 'react'
 import {Switch, Route} from 'react-router-dom'
-import {compose} from 'redux'
 import {connect} from 'react-redux'
-import {createStructuredSelector} from 'reselect'
-
-import {makeSelectChangePasswordError} from '../../store/selectors/user'
-import {changePassword} from '../../store/actions/user'
 import {setNavbar, resetNavbar} from '../../store/actions/app'
 import userProfilNavigation from '../AppTool&Navbar/userProfileNavigation'
-import ChangePasswordForm from './ChangePasswordForm'
-import withTransition from '../shared/transitionWrapper'
+
+import AccountSettings from './AccountSettings'
+import Orders from './Orders'
 
 class UserProfile extends React.Component {
   componentDidMount() {
@@ -34,16 +30,8 @@ class UserProfile extends React.Component {
       <div className="app-page fixed">
         <div className="aligned scrollable">
           <Switch>
-            <Route
-              path={`${path}`}
-              render={() => (
-                <ChangePasswordForm
-                  email={this.props.user}
-                  changePassword={this.props.changePassword}
-                  changePasswordError={this.props.changePasswordError}
-                />
-              )}
-            />
+            <Route path={`${path}/orders`} component={Orders} />
+            <Route path={`${path}`} component={AccountSettings} />
           </Switch>
         </div>
       </div>
@@ -51,17 +39,9 @@ class UserProfile extends React.Component {
   }
 }
 
-const mapStateToProps = () =>
-  createStructuredSelector({
-    changePasswordError: makeSelectChangePasswordError()
-  })
-
 const mapDispatchToProps = dispatch => ({
-  changePassword: data => dispatch(changePassword(data)),
   setNavbar: config => dispatch(setNavbar(config)),
   resetNavbar: () => dispatch(resetNavbar())
 })
 
-const withConnect = connect(mapStateToProps, mapDispatchToProps)
-
-export default compose(withTransition, withConnect)(UserProfile)
+export default connect(null, mapDispatchToProps)(UserProfile)

@@ -1,5 +1,6 @@
 import React from 'react'
 import {connect} from 'react-redux'
+import {compose} from 'redux'
 import {createStructuredSelector} from 'reselect'
 import {NavLink, Link} from 'react-router-dom'
 import {isEmpty} from 'lodash'
@@ -11,7 +12,8 @@ import {makeSelectUser} from '../../store/selectors/user'
 import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
 import Hidden from '@material-ui/core/Hidden'
-import {withStyles} from '@material-ui/core/styles'
+import addWidth from '@material-ui/core/withWidth'
+import {withStyles as addStyles} from '@material-ui/core/styles'
 import IconButton from '@material-ui/core/IconButton'
 import MenuIcon from '@material-ui/icons/Menu'
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart'
@@ -20,21 +22,34 @@ import classNames from 'classnames'
 import UserProfileOptions from './UserProfileOptions'
 import styles from './styles'
 
+const getNameLogoHiddenOptions = (config, permNavbarOpen) => {
+  return Object.keys(config).reduce((acum, size) => {
+    if (permNavbarOpen) {
+      acum[size] = true
+    } else {
+      acum[size] = false
+    }
+    return acum
+  }, {})
+}
 const AppToolbar = props => {
   const {classes} = props
+  const appBarShift = props.permOpen && !['sm', 'xs'].includes(props.width)
+  const nameLogoHidden = getNameLogoHiddenOptions(
+    props.nameHidden,
+    props.permOpen
+  )
+  console.log(nameLogoHidden)
 
   return (
-    <AppBar position="fixed" color="default">
-      <Toolbar disableGutters={true}>
-        <Hidden {...props.nameHidden} implementation="css">
-          <img
-            src="/images/logo.svg"
-            className={classNames(classes.menuButton, {
-              [classes.hide]: props.tempOpen
-            })}
-            alt="EdgyDev"
-          />
-        </Hidden>
+    <AppBar
+      position="fixed"
+      color="default"
+      className={classNames(classes.appBar, {
+        [classes.appBarShift]: appBarShift
+      })}
+    >
+      <Toolbar disableGutters={true} className={classes.toolbar}>
         <Hidden {...props.menuHidden} implementation="css">
           <IconButton
             color="inherit"
@@ -47,10 +62,20 @@ const AppToolbar = props => {
             <MenuIcon />
           </IconButton>
         </Hidden>
-        <img className={classes.logo} src="/images/logo.svg" alt="EdgyDev" />
-        <Link to="/" className={classes.title}>
-          <h2>Edgy Dev</h2>
-        </Link>
+        <Hidden {...nameLogoHidden}>
+          <img
+            src="/images/logo.svg"
+            className={classNames(classes.menuButton, classes.logo, {
+              [classes.hide]: props.tempOpen
+            })}
+            alt="EdgyDev"
+          />
+        </Hidden>
+        <Hidden {...nameLogoHidden}>
+          <Link to="/" className={classes.title}>
+            <h2>Edgy Dev</h2>
+          </Link>
+        </Hidden>
         <div className={classes.categoryBtns}>
           <NavLink className={classes.link} to="/products">
             All Products
@@ -84,7 +109,6 @@ const AppToolbar = props => {
           </React.Fragment>
         ) : (
           <React.Fragment>
-            <div className="vertical-divider" />
             <UserProfileOptions
               user={props.user}
               logout={props.logout}
@@ -114,6 +138,8 @@ const mapDispatchToProps = dispatch => ({
   logout: () => dispatch(logout())
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(
-  withStyles(styles)(AppToolbar)
-)
+const withConnect = connect(mapStateToProps, mapDispatchToProps)
+const withStyles = addStyles(styles)
+const withWidth = addWidth()
+
+export default compose(withConnect, withWidth, withStyles)(AppToolbar)

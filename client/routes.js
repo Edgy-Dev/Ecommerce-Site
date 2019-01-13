@@ -7,15 +7,13 @@ import {
   Login,
   Register,
   UserHome,
-  UserProfile,
+  UserAccount,
   AllProductView,
   SingleProductView
 } from './components'
-import {me} from './store/actions/user'
 import {retreiveProducts} from './store/productAbstract'
 import ProtectedRoute from './components/shared/ProtectedRoute'
 import HasProtectionRoute from './components/shared/HasProtectionRoute'
-import {makeSelectUserExists} from './store/selectors/user'
 import dataLoader, {LoaderFn} from './components/shared/dataLoader'
 import {makeSelectProductsLoaded} from './store/selectors/product'
 
@@ -28,7 +26,7 @@ const Routes = props => {
       {/* Routes placed here are only available after logging in */}
       <HasProtectionRoute path="/login" component={Login} />
       <HasProtectionRoute path="/register" component={Register} />
-      <ProtectedRoute path="/user-profile" component={UserProfile} />
+      <ProtectedRoute path="/account" component={UserAccount} />
       <Route exact path="/products" component={AllProductView} />
       <Route exact path="/products/:id" component={SingleProductView} />
       <Route path="/" component={UserHome} />
@@ -42,7 +40,6 @@ const Routes = props => {
 
 // Load data using a HoC
 const loaders = [
-  new LoaderFn('user', me, makeSelectUserExists),
   new LoaderFn('products', retreiveProducts, makeSelectProductsLoaded)
 ]
 

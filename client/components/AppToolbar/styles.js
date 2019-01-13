@@ -17,6 +17,9 @@ const styles = theme => ({
       duration: theme.transitions.duration.enteringScreen
     })
   },
+  toolbar: {
+    height: '64px'
+  },
   menuButton: {
     marginLeft: 12
   },
@@ -40,7 +43,10 @@ const styles = theme => ({
   },
   title: {
     textDecoration: 'none',
-    color: '#3f51b5'
+    color: '#3f51b5',
+    [theme.breakpoints.down('xs')]: {
+      fontSize: '0.7em'
+    }
   },
   link: {
     color: '#3f51b5',

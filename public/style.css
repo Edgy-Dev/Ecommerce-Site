@@ -22,11 +22,6 @@ nav a {
   margin: 1em;
 }
 
-form div {
-  margin: 1em;
-  display: inline-block;
-}
-
 /* App */
 .app {
   min-height: 100%;
@@ -141,7 +136,7 @@ form div {
 .auth-form-wrapper {
   width: 424px;
   max-width: 424px;
-  padding: 32px;
+  padding: 8px 32px;
   background: #ffffff;
   text-align: center;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
@@ -159,7 +154,7 @@ form div {
 
 .auth-form {
   width: 100%;
-  text-align: left;
+  text-align: left !important;
 }
 
 .auth-form-field {

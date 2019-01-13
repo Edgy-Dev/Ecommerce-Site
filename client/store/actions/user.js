@@ -11,7 +11,7 @@ export const addUser = user => ({
 
 export const removeUser = () => ({type: types.REMOVE_USER})
 
-export const addAnonUser = user => ({
+export const addAnonUser = () => ({
   type: types.ADD_ANON_USER
 })
 

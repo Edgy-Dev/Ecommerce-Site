@@ -85,7 +85,7 @@ function defaultNavbarConfig() {
   return {
     tempOpen: false,
     permOpen: false,
-    nameHidden: {mdUp: true},
+    nameHidden: {smDown: true},
     menuHidden: {mdUp: true},
     permHidden: {smDown: true},
     tempHidden: {mdUp: true},

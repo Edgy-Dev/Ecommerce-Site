@@ -29,14 +29,8 @@ const localStategdy = new LocalStatedgy(
         return done(null, false)
       }
 
-      /* Return user data */
-      return done(null, {
-        id: user.id,
-        firstName: user.firstName,
-        lastName: user.lastName,
-        cart: user.cart,
-        addresses: user.addresses
-      })
+      /* Return user user id */
+      return done(null, user)
     } catch (err) {
       return done(err)
     }

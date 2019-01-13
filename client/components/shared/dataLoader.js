@@ -56,16 +56,15 @@ const dataLoader = loaders => WrappedComponent => {
         }
       }
 
-      // componentDidUpdate() {
-      //   console.log(this.props)
-      //   const dataLoaded = loaders
-      //     .map(loader => this.props[loader.dataName + 'Loaded'])
-      //     .every(dataLoad => dataLoad)
+      componentDidUpdate() {
+        const dataLoaded = loaders
+          .map(loader => this.props[loader.dataName + 'Loaded'])
+          .every(dataLoad => dataLoad)
 
-      //   if (dataLoaded && this.state.loading) {
-      //     this.setState({loading: false})
-      //   }
-      // }
+        if (dataLoaded && this.state.loading) {
+          this.setState({loading: false})
+        }
+      }
 
       loadData() {
         const dataLoaders = []
