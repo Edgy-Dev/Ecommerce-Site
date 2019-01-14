@@ -11,12 +11,13 @@ const {
 } = require('../server/db/models')
 const faker = require('faker')
 
+/* eslint-disable max-statements*/
 async function seed() {
   await db.sync({force: true})
   console.log('db synced!')
 
-  const totalUsers = 10
-  const totalProductsAb = 1
+  const totalUsers = 30
+  const totalProductsAb = 30
 
   // User data
   const users = Array(totalUsers)

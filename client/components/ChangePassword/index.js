@@ -10,11 +10,7 @@ import ChangePasswordForm from './ChangePasswordForm'
 
 const ChangePassword = props => {
   return (
-    <div className="auth-form-wrapper">
-      <div className="auth-logo">
-        <img src="/images/logo.svg" alt="EdgyDev" />
-      </div>
-      <h3 className="auth-title">Change Password</h3>
+    <div className="row-horizontal-wrapper">
       <ChangePasswordForm
         changePassword={props.changePassword}
         changePasswordError={props.changePasswordError}

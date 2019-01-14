@@ -43,6 +43,10 @@ passport.deserializeUser(async (userId, done) => {
         {
           model: db.models.address,
           attributes: {exclude: ['createdAt', 'updatedAt', 'userId']}
+        },
+        {
+          model: db.models.paymentInfo,
+          attributes: ['id', 'lastFourDigits']
         }
       ]
     })

@@ -2,16 +2,38 @@ import React from 'react'
 import {compose} from 'redux'
 import {connect} from 'react-redux'
 import {createStructuredSelector} from 'reselect'
+import IconButton from '@material-ui/core/IconButton'
+import DeleteIcon from '@material-ui/icons/Delete'
 
 import dataLoader from '../shared/dataLoader'
 import withTransition from '../shared/transitionWrapper'
 
-import {makeSelectUser} from '../../store/selectors/user'
-
-const ShippingAddress = props => {}
+const ShippingAddress = ({address, number}) => {
+  const fullAddress = `${address.firstLine}, ${address.secondLine}`
+  return (
+    <div className="row-horizontal">
+      <div className="row-content">
+        <span>{number + 1}</span>
+        <span className="vertical-divider" />
+        <span>{fullAddress}</span>
+      </div>
+      <div className="row-actions">
+        <IconButton>
+          <DeleteIcon />
+        </IconButton>
+      </div>
+    </div>
+  )
+}
 
 const ShippingAddresses = props => {
-  return <h1>Hello Shipping</h1>
+  return (
+    <div>
+      {props.addresses.map((address, i) => (
+        <ShippingAddress key={address.id} number={i} address={address} />
+      ))}
+    </div>
+  )
 }
 
 const mapStateToProps = () => createStructuredSelector({})
