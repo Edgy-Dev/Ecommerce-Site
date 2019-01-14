@@ -6,7 +6,8 @@ const {
   Address,
   PaymentInfo,
   Order,
-  ProductAbstract
+  ProductAbstract,
+  ProductInstance
 } = require('../server/db/models')
 const faker = require('faker')
 
@@ -15,8 +16,9 @@ async function seed() {
   console.log('db synced!')
 
   const totalUsers = 10
-  const totalProductsAb = 20
+  const totalProductsAb = 1
 
+  // User data
   const users = Array(totalUsers)
     .fill(null)
     .map(_ => ({
@@ -32,16 +34,32 @@ async function seed() {
     lastName: 'Gichimu'
   }
 
-  //await User.create(users[0]);
+  const getPrice = category => {
+    if (category == 'Tee') {
+      return 1500
+    } else if (category == 'Longsleeve') {
+      return 2000
+    } else if (category == 'Hoodie') {
+      return 3000
+    }
+  }
 
+  // Product abstract data
   const productsAb = Array(totalProductsAb)
     .fill(null)
-    .map(_ => ({
-      name: faker.commerce.productName(),
-      price: faker.random.number({min: 1000, max: 10000}),
-      category: faker.random.arrayElement(['Tee', 'Longsleeve', 'Hoodie'])
-    }))
+    .reduce((products, _) => {
+      ;['Tee', 'Longsleeve', 'Hoodie'].forEach(category => {
+        const price = getPrice(category)
+        products.push({
+          name: faker.commerce.productName(),
+          price,
+          category
+        })
+      })
+      return products
+    }, [])
 
+  // Address data
   const addresses = Array(totalUsers)
     .fill(null)
     .map(_ => ({
@@ -51,6 +69,7 @@ async function seed() {
       zipCode: faker.address.zipCode()
     }))
 
+  // Payment info data
   const payMentInfos = Array(totalUsers)
     .fill(null)
     .map(_ => ({
@@ -58,17 +77,44 @@ async function seed() {
       lastFourDigits: faker.random.number({min: 1000, max: 9999})
     }))
 
-  const completed = () => Math.random() > 0.5
+  // Creater user, addresses, payment models, orders
+  const userModels = await User.bulkCreate(users, {returning: true})
+  const addressModels = await Address.bulkCreate(addresses, {returning: true})
+  const paymentModels = await PaymentInfo.bulkCreate(payMentInfos, {
+    returning: true
+  })
+
+  // Create product asbtract
+  const productAbModels = await ProductAbstract.bulkCreate(productsAb, {
+    returning: true
+  })
+
+  // Create product instance models
+  const productInstanceModels = []
+  for (let i = 0; i < productAbModels.length; i++) {
+    for (let j = 0; j < productAbModels[i].color.length; j++) {
+      for (let k = 0; k < productAbModels[i].size.length; k++) {
+        const productInstance = await ProductInstance.create({
+          name: productAbModels[i].name,
+          category: productAbModels[i].category,
+          color: productAbModels[i].color[j],
+          size: productAbModels[i].size[k]
+        })
+        productInstanceModels.push(productInstance)
+      }
+    }
+  }
 
   const cart = () =>
-    Math.random() > 0.5
-      ? []
-      : Array(Math.ceil(Math.random() * 10))
-          .fill(null)
-          .map(_ => ({
-            productId: Math.floor(Math.random() * totalProductsAb),
-            quantity: Math.ceil(Math.random() * 6)
-          }))
+    Array(Math.ceil(Math.random() * 10))
+      .fill(null)
+      .map(_ => ({
+        productId: Math.floor(Math.random() * productInstanceModels.length),
+        quantity: Math.ceil(Math.random() * 6)
+      }))
+
+  // Order data
+  const completed = () => Math.random() > 0.5
 
   const orders = Array(totalUsers * 10)
     .fill(null)
@@ -78,29 +124,25 @@ async function seed() {
       completed: completed()
     }))
 
-  const userModels = await User.bulkCreate(users, {returning: true})
-  const addressModels = await Address.bulkCreate(addresses, {returning: true})
-  const paymentModels = await PaymentInfo.bulkCreate(payMentInfos, {
-    returning: true
-  })
   const orderModels = await Order.bulkCreate(orders, {returning: true})
-  const productAbModels = await ProductAbstract.bulkCreate(productsAb, {
-    returning: true
-  })
 
+  // Encypt password
+  // Set address and payment info
   for (let i = 0; i < totalUsers; i++) {
     userModels[i].password = User.encryptPassword(userModels[i].password(), 5)
-
+    userModels[i].cart = Math.random() > 0.5 ? [] : cart()
     await userModels[i].save()
     await addressModels[i].setUser(userModels[i])
     await paymentModels[i].setUser(userModels[i])
   }
 
+  // Set orders
   for (let i = 0; i < totalUsers * 10; i++) {
     await orderModels[i].setUser(userModels[i % totalUsers])
   }
 
   console.log(`seeded ${totalUsers} users`)
+  console.log(`seeded products`)
   console.log(`seeded successfully`)
 }
 
