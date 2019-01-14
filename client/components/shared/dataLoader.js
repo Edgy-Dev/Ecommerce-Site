@@ -57,6 +57,7 @@ const dataLoader = loaders => WrappedComponent => {
       }
 
       componentDidUpdate() {
+        // OB/JD: should `loadData` somewhere here
         const dataLoaded = loaders
           .map(loader => this.props[loader.dataName + 'Loaded'])
           .every(dataLoad => dataLoad)

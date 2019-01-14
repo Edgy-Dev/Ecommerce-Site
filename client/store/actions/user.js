@@ -39,6 +39,7 @@ export const resolveRegisterError = () => ({
 })
 
 /* thunk creators */
+// OB/JD: array ("iterable") and promise redux middleware, where if you dispatch an array it loops down and dispatches all the actions, or if it is a promise it waits for that promise to resolve then dispatches that
 export const me = () => dispatch => {
   return request('/auth/me', {}, dispatch, data => {
     if (isEmpty(data)) {

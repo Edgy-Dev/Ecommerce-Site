@@ -35,6 +35,8 @@ class AllLongSleeveView extends Component {
   }
 }
 
+// OB/JD: a component called ProductsFilter that takes a string of what to filter by: `<ProductsFilter category='Longsleeve' />`
+
 const mapStateToProps = state => {
   return {
     allProducts: state.products.allProducts,

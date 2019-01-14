@@ -11,6 +11,7 @@ const {
 } = require('../server/db/models')
 const faker = require('faker')
 
+// OB/JD: split up the big banks
 async function seed() {
   await db.sync({force: true})
   console.log('db synced!')
@@ -91,6 +92,7 @@ async function seed() {
 
   // Create product instance models
   const productInstanceModels = []
+  // OB/JD: could use for..of instead of for loops below if you don't need the index
   for (let i = 0; i < productAbModels.length; i++) {
     for (let j = 0; j < productAbModels[i].color.length; j++) {
       for (let k = 0; k < productAbModels[i].size.length; k++) {
