@@ -39,7 +39,6 @@ const AppToolbar = props => {
     props.nameHidden,
     props.permOpen
   )
-  console.log(nameLogoHidden)
 
   return (
     <AppBar

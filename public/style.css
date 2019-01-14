@@ -25,12 +25,15 @@ nav a {
 /* App */
 .app {
   min-height: 100%;
+  position: 'relative';
+  overflow: 'hidden';
 }
 
 .app-wrapper {
   display: flex;
   flex-direction: column;
   width: 100%;
+  position: 'relative';
   overflow: hidden;
   min-height: 100%;
 }
@@ -126,10 +129,8 @@ nav a {
 /* Authentication */
 .auth-page {
   width: 100%;
-  height: 100%;
-  overflow: auto;
+  padding: 32px;
   display: flex;
-  align-items: center;
   justify-content: center;
 }
 

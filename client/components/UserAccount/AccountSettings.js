@@ -11,6 +11,7 @@ import ShippingAddresses from '../ShippingAddresses'
 import PaymentInfos from '../PaymentInfos'
 
 const AccountSettings = props => {
+  console.log(props)
   return (
     <div>
       <h3 className="auth-title">Account Settings</h3>

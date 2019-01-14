@@ -25,6 +25,12 @@ async function seed() {
       firstName: faker.name.firstName(),
       lastName: faker.name.lastName()
     }))
+  users[0] = {
+    email: 'duncangichimu@gmail.com',
+    password: 'password',
+    firstName: 'Duncan',
+    lastName: 'Gichimu'
+  }
 
   //await User.create(users[0]);
 

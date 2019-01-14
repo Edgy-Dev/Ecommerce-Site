@@ -38,6 +38,7 @@ passport.serializeUser((user, done) => done(null, user.id))
 passport.deserializeUser(async (userId, done) => {
   try {
     const user = await db.models.user.findById(userId, {
+      attributes: ['firstName', 'lastName'],
       include: [
         {
           model: db.models.address,

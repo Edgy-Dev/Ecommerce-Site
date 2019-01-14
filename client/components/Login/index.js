@@ -13,7 +13,7 @@ import withTransition from '../shared/transitionWrapper'
 const Login = props => {
   return (
     <div className="auth-page">
-      <div className="auth-form-wrapper">
+      <div className="auth-form-wrapper ">
         <div className="auth-logo">
           <img src="/images/logo.svg" alt="EdgyDev" />
         </div>
