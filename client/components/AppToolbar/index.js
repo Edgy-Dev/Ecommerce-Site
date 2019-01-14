@@ -79,13 +79,13 @@ const AppToolbar = props => {
           <NavLink className={classes.link} to="/products">
             All Products
           </NavLink>
-          <NavLink className={classes.link} to="/tees">
+          <NavLink className={classes.link} to="/products/tees">
             Long Sleeves
           </NavLink>
-          <NavLink className={classes.link} to="/long-sleeves">
+          <NavLink className={classes.link} to="/products/longsleeves">
             Short Sleeves
           </NavLink>
-          <NavLink className={classes.link} to="hoodies">
+          <NavLink className={classes.link} to="/products/hoodies">
             Hoodies
           </NavLink>
         </div>
