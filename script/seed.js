@@ -14,8 +14,8 @@ async function seed() {
   await db.sync({force: true})
   console.log('db synced!')
 
-  const totalUsers = 50
-  const totalProductsAb = 25
+  const totalUsers = 10
+  const totalProductsAb = 20
 
   const users = Array(totalUsers)
     .fill(null)
