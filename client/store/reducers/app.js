@@ -1,6 +1,7 @@
 import * as types from '../constants/app'
 import navigation from '../../components/AppTool&Navbar/navigation'
 
+// OB/JD: could `combineReducers` here
 const initialState = {
   appMessage: defaultAppMessage(),
   dialogOptions: defaultAppDialogOptions(),
@@ -75,6 +76,7 @@ function defaultAppDialogOptions() {
     title: '',
     contentText: '',
     width: 'sm',
+    // OB/JD: go with a higher order component
     handleClose: null,
     renderContent: null,
     renderActions: null

@@ -44,6 +44,17 @@ const mapStateToProps = state => {
   }
 }
 
+// OB/JD
+/*
+Shorthand object format for mapDispatchToProps, when it is of the shape:
+const mapDispatchToProps = dispatch => ({
+  someMethod: () => dispatch(someActionCreator())
+});
+You can instead do:
+const mapDispatchToProps = {
+  someMethod: someActionCreator
+};
+*/
 const mapDispatchToProps = dispatch => {
   return {
     getProducts() {

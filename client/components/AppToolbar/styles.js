@@ -1,4 +1,5 @@
 const drawerWidth = 240
+// OB/JD: consider reuse of styling code
 const styles = theme => ({
   root: {display: 'flex'},
   appBar: {

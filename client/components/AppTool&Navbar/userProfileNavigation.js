@@ -21,3 +21,12 @@ export default [
     dispatcher: logout
   }
 ]
+
+// OB/JD
+/*
+<NavItem
+  id={5}
+  label={'Logout'}
+  icon={'power_settings_new'}
+  to={''} />
+*/
