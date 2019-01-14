@@ -12,11 +12,7 @@ const PaymentInfo = db.define('paymentInfo', {
   },
   lastFourDigits: {
     type: Sequelize.INTEGER,
-    allowNull: false,
-
-    get() {
-      return () => this.getDataValue('lastFourDigits')
-    }
+    allowNull: false
   }
 })
 
