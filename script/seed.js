@@ -38,7 +38,8 @@ async function seed() {
     .fill(null)
     .map(_ => ({
       name: faker.commerce.productName(),
-      price: faker.random.number({min: 1000, max: 10000})
+      price: faker.random.number({min: 1000, max: 10000}),
+      category: faker.random.arrayElement(['Tee', 'Longsleeve', 'Hoodie'])
     }))
 
   const addresses = Array(totalUsers)

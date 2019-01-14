@@ -10,9 +10,9 @@ const ProductAbstract = db.define('productAbstract', {
     }
   },
   category: {
-    type: Sequelize.ARRAY(Sequelize.STRING),
+    type: Sequelize.STRING,
     allowNull: false,
-    defaultValue: ['Tee', 'Long Sleeve', 'Hoodie']
+    defaultValue: 'Tee'
   },
   price: {
     type: Sequelize.INTEGER,
