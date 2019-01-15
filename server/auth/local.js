@@ -12,7 +12,7 @@ const localStategdy = new LocalStatedgy(
       /* Find user */
       const user = await User.findOne({
         where: {email: email},
-        attributes: ['firstName', 'lastName', 'id', 'cart', 'password'],
+        attributes: ['id', 'firstName', 'lastName', 'id', 'cart', 'password'],
         include: [
           {
             model: Address,

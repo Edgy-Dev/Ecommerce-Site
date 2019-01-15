@@ -20,3 +20,9 @@ export const makeSelectChangePasswordError = () =>
 
 export const makeSelectAnonUser = () =>
   createSelector(selectUser, userState => userState.anonUser)
+
+export const makeSelectOrders = () =>
+  createSelector(selectUser, userState => userState.orders)
+
+export const makeSelectOrdersLoaded = () =>
+  createSelector(selectUser, userState => userState.orders.length > 0)

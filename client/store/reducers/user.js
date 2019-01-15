@@ -7,7 +7,8 @@ const initialState = {
   loginError: '',
   registerError: '',
   changePasswordError: '',
-  checkoutError: ''
+  checkoutError: '',
+  orders: ''
 }
 
 /*eslint-disable complexity*/
@@ -46,6 +47,11 @@ const userReducer = (state = initialState, action) => {
       return {...state, checkoutError: action.error}
     case types.RESOLVE_CHECKOUT_ERROR:
       return {...state, checkoutError: ''}
+
+    case types.INIT_ORDERS:
+      return {...state, orders: action.orders}
+    case types.ADD_ORDER:
+      return {...state, orders: [action.order, ...state.orders]}
   }
 }
 
