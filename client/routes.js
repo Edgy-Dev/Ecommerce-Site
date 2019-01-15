@@ -10,7 +10,8 @@ import {
   AllHoodieView,
   AllLongsleeveView,
   AllTeeView,
-  SingleProductView
+  SingleProductView,
+  Checkout
 } from './components'
 import {retreiveProducts} from './store/productAbstract'
 import ProtectedRoute from './components/shared/ProtectedRoute'
@@ -33,6 +34,7 @@ const Routes = props => {
       <Route exact path="/products/hoodies" component={AllHoodieView} />
       <Route exact path="/products/longsleeves" component={AllLongsleeveView} />
       <Route exact path="/products/:id" component={SingleProductView} />
+      <Route exact path="/checkout" component={Checkout} />
       <Route path="/" component={UserHome} />
     </Switch>
   )

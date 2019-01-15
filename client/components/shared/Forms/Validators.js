@@ -39,6 +39,10 @@ function ValidatorFactory() {
     }
   }
 
+  validator.followsRegex = regex => {
+    return value => regex.test(value)
+  }
+
   return Object.create(validator)
 }
 

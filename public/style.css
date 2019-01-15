@@ -60,8 +60,14 @@ nav a {
   margin: 8px;
   padding: 8px 32px;
 }
+
+.row-horizontal-wrapper-no-width {
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+  margin: 8px;
+  padding: 8px 32px;
+}
+
 .row-horizontal {
-  width: 100%;
   margin: 8px;
   height: 64px;
   padding: 8px 32px;
@@ -78,6 +84,11 @@ nav a {
 .row-number {
   margin-right: 5px;
   font-weight: 400;
+}
+
+.info-wrapper {
+  width: 90%;
+  margin: 0 auto;
 }
 
 .active {

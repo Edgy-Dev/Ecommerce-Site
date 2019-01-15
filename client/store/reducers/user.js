@@ -6,7 +6,8 @@ const initialState = {
   anonUser: {},
   loginError: '',
   registerError: '',
-  changePasswordError: ''
+  changePasswordError: '',
+  checkoutError: ''
 }
 
 /*eslint-disable complexity*/
@@ -40,6 +41,11 @@ const userReducer = (state = initialState, action) => {
       return {...state, changePasswordError: ''}
     default:
       return state
+
+    case types.CHECKOUT_ERROR:
+      return {...state, checkoutError: action.error}
+    case types.RESOLVE_CHECKOUT_ERROR:
+      return {...state, checkoutError: ''}
   }
 }
 

@@ -45,7 +45,7 @@ const SideNav = props => {
             key={navItem.id}
             {...navItem}
             drawerClose={
-              props.variant === 'temporary' && props.handleDrawerClose
+              props.variant === 'temporary' ? props.handleDrawerClose : null
             }
           />
         ))}

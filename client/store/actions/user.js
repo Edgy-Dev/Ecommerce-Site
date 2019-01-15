@@ -38,6 +38,15 @@ export const resolveRegisterError = () => ({
   type: types.RESOLVE_REGISTER_ERROR
 })
 
+export const checkoutError = error => ({
+  type: types.CHECKOUT_ERROR,
+  error
+})
+
+export const resolveCheckout = () => ({
+  type: types.RESOLVE_CHECKOUT_ERROR
+})
+
 /* thunk creators */
 export const me = () => dispatch => {
   return request('/auth/me', {}, dispatch, data => {
@@ -121,4 +130,25 @@ export const logout = () => dispatch => {
     dispatch(removeUser())
     history.push('/login')
   })
+}
+
+export const checkout = (loggedInUser, cart) => dispatch => {
+  request(
+    '/api/checkout',
+    {
+      method: 'POST',
+      body: JSON.stringify(cart)
+    },
+    dispatch,
+    data => {
+      if (loggedInUser) {
+        history.push('/account/orders/' + data.orderId)
+      } else {
+        history.push('/order-success')
+      }
+    },
+    error => {
+      dispatch(checkoutError(error.message))
+    }
+  )
 }

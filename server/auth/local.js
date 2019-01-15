@@ -2,7 +2,7 @@ const passport = require('passport')
 const LocalStatedgy = require('passport-local')
 const router = require('express').Router()
 
-const {User, Address} = require('../db/models')
+const {User, Address, PaymentInfo} = require('../db/models')
 const {ResponseMessage} = require('../utils')
 
 const localStategdy = new LocalStatedgy(
@@ -12,10 +12,15 @@ const localStategdy = new LocalStatedgy(
       /* Find user */
       const user = await User.findOne({
         where: {email: email},
+        attributes: ['firstName', 'lastName', 'id', 'cart', 'password'],
         include: [
           {
             model: Address,
             attributes: {exclude: ['createdAt', 'updatedAt', 'userId']}
+          },
+          {
+            model: PaymentInfo,
+            attributes: ['id', 'lastFourDigits']
           }
         ]
       })

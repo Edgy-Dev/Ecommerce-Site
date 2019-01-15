@@ -116,9 +116,11 @@ const AppToolbar = props => {
           </React.Fragment>
         )}
         <div className="vertical-divider" />
-        <IconButton color="inherit">
-          <ShoppingCartIcon />
-        </IconButton>
+        <Link to="/checkout">
+          <IconButton color="inherit">
+            <ShoppingCartIcon />
+          </IconButton>
+        </Link>
         <span>
           {(props.user && props.user.cart && props.user.cart.length) || 0}
         </span>
