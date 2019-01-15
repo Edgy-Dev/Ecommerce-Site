@@ -10,7 +10,6 @@ class AllHoodieView extends Component {
   }
 
   render() {
-    console.log(this.props.displayedProducts)
     const productList = this.props.displayedProducts
     return (
       <div>

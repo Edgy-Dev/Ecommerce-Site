@@ -17,3 +17,12 @@ export const makeSelectRegisterError = () =>
 
 export const makeSelectChangePasswordError = () =>
   createSelector(selectUser, userState => userState.changePasswordError)
+
+export const makeSelectAnonUser = () =>
+  createSelector(selectUser, userState => userState.anonUser)
+
+export const makeSelectOrders = () =>
+  createSelector(selectUser, userState => userState.orders)
+
+export const makeSelectOrdersLoaded = () =>
+  createSelector(selectUser, userState => userState.orders.length > 0)

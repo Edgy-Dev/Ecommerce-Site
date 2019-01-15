@@ -2,11 +2,14 @@ import React from 'react'
 import {compose} from 'redux'
 import {connect} from 'react-redux'
 import {createStructuredSelector} from 'reselect'
+
 import IconButton from '@material-ui/core/IconButton'
 import DeleteIcon from '@material-ui/icons/Delete'
-
-import dataLoader from '../shared/dataLoader'
-import withTransition from '../shared/transitionWrapper'
+import Radio from '@material-ui/core/Radio'
+import RadioGroup from '@material-ui/core/RadioGroup'
+import FormControlLabel from '@material-ui/core/FormControlLabel'
+import FormControl from '@material-ui/core/FormControl'
+import FormLabel from '@material-ui/core/FormLabel'
 
 const ShippingAddress = ({address, number}) => {
   const fullAddress = `${address.firstLine}, ${address.secondLine}`
@@ -28,7 +31,7 @@ const ShippingAddress = ({address, number}) => {
 
 const ShippingAddresses = props => {
   return (
-    <div>
+    <div className="info-wrapper">
       {props.addresses.map((address, i) => (
         <ShippingAddress key={address.id} number={i} address={address} />
       ))}
@@ -36,13 +39,33 @@ const ShippingAddresses = props => {
   )
 }
 
+export const SelectShippingAddress = props => {
+  if (props.addresses.length === 0) {
+    return null
+  } else {
+    const value =
+      (props.selectedAddress && props.selectedAddress.id.toString()) || null
+    return (
+      <FormControl component="fieldset">
+        <FormLabel component="legend">Address</FormLabel>
+        <RadioGroup value={value} onChange={props.handleChange}>
+          {props.addresses.map(address => (
+            <FormControlLabel
+              key={address.id}
+              value={address.id.toString()}
+              label={`${address.firstLine}, ${address.secondLine}`}
+              control={<Radio color="primary" />}
+            />
+          ))}
+        </RadioGroup>
+      </FormControl>
+    )
+  }
+}
+
 const mapStateToProps = () => createStructuredSelector({})
 const mapDispatchToProps = dispatch => ({})
 
 const withConnect = connect(mapStateToProps, mapDispatchToProps)
 
-const loaders = []
-
-const withData = dataLoader(loaders)
-
-export default compose(withConnect, withData, withTransition)(ShippingAddresses)
+export default compose(withConnect)(ShippingAddresses)

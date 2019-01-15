@@ -19,7 +19,6 @@ class SingleProductView extends Component {
     this.setState({
       currentProduct: newProduct
     })
-    console.log(this.state.currentProduct)
   }
 
   render() {

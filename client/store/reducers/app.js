@@ -25,7 +25,7 @@ const appReducer = (state = initialState, action) => {
 
     // App dialog
     case types.OPEN_APP_DIALOG:
-      return {...state, dialogOptions: action.dialogOptions}
+      return {...state, dialogOptions: setDialogOptions(action.dialogOptions)}
     case types.CLOSE_APP_DIALOG:
       return {...state, dialogOptions: {...state.dialogOptions, open: false}}
     case types.RESET_APP_DIALOG:
@@ -79,6 +79,18 @@ function defaultAppDialogOptions() {
     renderContent: null,
     renderActions: null
   }
+}
+
+function setDialogOptions(dialogOptions) {
+  const options = defaultAppDialogOptions()
+  for (let option in options) {
+    if (options.hasOwnProperty(option)) {
+      options[option] = dialogOptions[option]
+        ? dialogOptions[option]
+        : options[option]
+    }
+  }
+  return options
 }
 
 function defaultNavbarConfig() {

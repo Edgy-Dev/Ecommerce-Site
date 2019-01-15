@@ -10,7 +10,7 @@ import ChangePasswordForm from './ChangePasswordForm'
 
 const ChangePassword = props => {
   return (
-    <div className="row-horizontal-wrapper">
+    <div className="row-horizontal-wrapper info-wrapper">
       <ChangePasswordForm
         changePassword={props.changePassword}
         changePasswordError={props.changePasswordError}

@@ -38,6 +38,25 @@ export const resolveRegisterError = () => ({
   type: types.RESOLVE_REGISTER_ERROR
 })
 
+export const checkoutError = error => ({
+  type: types.CHECKOUT_ERROR,
+  error
+})
+
+export const resolveCheckout = () => ({
+  type: types.RESOLVE_CHECKOUT_ERROR
+})
+
+export const initOrders = orders => ({
+  type: types.INIT_ORDERS,
+  orders
+})
+
+export const addOdder = order => ({
+  type: types.ADD_ORDER,
+  order
+})
+
 /* thunk creators */
 export const me = () => dispatch => {
   return request('/auth/me', {}, dispatch, data => {
@@ -52,7 +71,7 @@ export const me = () => dispatch => {
 export const auth = ({email, password, method}) => dispatch => {
   dispatch(resolveLoginError())
 
-  request(
+  return request(
     `/auth/${method}`,
     {
       method: 'POST',
@@ -75,7 +94,7 @@ export const auth = ({email, password, method}) => dispatch => {
 export const changePassword = data => dispatch => {
   dispatch(resolveChangePasswordError())
 
-  request(
+  return request(
     '/auth/change-password',
     {
       method: 'POST',
@@ -96,7 +115,7 @@ export const changePassword = data => dispatch => {
 export const register = data => dispatch => {
   dispatch(resolveRegisterError())
 
-  request(
+  return request(
     '/auth/register',
     {
       method: 'POST',
@@ -117,8 +136,35 @@ export const register = data => dispatch => {
 }
 
 export const logout = () => dispatch => {
-  request('/auth/logout', {method: 'POST'}, dispatch, () => {
+  return request('/auth/logout', {method: 'POST'}, dispatch, () => {
     dispatch(removeUser())
     history.push('/login')
+  })
+}
+
+export const checkout = (loggedInUser, cart) => dispatch => {
+  return request(
+    '/api/checkout',
+    {
+      method: 'POST',
+      body: JSON.stringify(cart)
+    },
+    dispatch,
+    data => {
+      if (loggedInUser) {
+        history.push('/account/orders/' + data.orderId)
+      } else {
+        history.push('/order-success')
+      }
+    },
+    error => {
+      dispatch(checkoutError(error.message))
+    }
+  )
+}
+
+export const retrieveOrders = () => dispatch => {
+  return request('/api/users/orders', {}, dispatch, orders => {
+    dispatch(initOrders(orders))
   })
 }

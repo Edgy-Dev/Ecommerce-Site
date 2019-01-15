@@ -49,10 +49,11 @@ async function seed() {
   const productsAb = Array(totalProductsAb)
     .fill(null)
     .reduce((products, _) => {
+      const name = faker.commerce.productName()
       ;['Tee', 'Longsleeve', 'Hoodie'].forEach(category => {
         const price = getPrice(category)
         products.push({
-          name: faker.commerce.productName(),
+          name,
           price,
           category
         })
@@ -110,7 +111,10 @@ async function seed() {
     Array(Math.ceil(Math.random() * 10))
       .fill(null)
       .map(_ => ({
-        productId: Math.floor(Math.random() * productInstanceModels.length),
+        product:
+          productInstanceModels[
+            Math.floor(Math.random() * productInstanceModels.length)
+          ],
         quantity: Math.ceil(Math.random() * 6)
       }))
 
