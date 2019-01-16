@@ -13,6 +13,8 @@ User.hasMany(PaymentInfo)
 
 Order.belongsTo(User)
 User.hasMany(Order)
+Address.belongsTo(Order)
+Order.hasOne(Address)
 
 /**
  * If we had any associations to make, this would be a great place to put them!

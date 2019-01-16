@@ -40,8 +40,6 @@ const userReducer = (state = initialState, action) => {
       return {...state, changePasswordError: action.error}
     case types.RESOLVE_CHANGE_PASSWORD_ERROR:
       return {...state, changePasswordError: ''}
-    default:
-      return state
 
     case types.CHECKOUT_ERROR:
       return {...state, checkoutError: action.error}
@@ -52,9 +50,54 @@ const userReducer = (state = initialState, action) => {
       return {...state, orders: action.orders}
     case types.ADD_ORDER:
       return {...state, orders: [action.order, ...state.orders]}
+
+    case types.ADD_ADDRESS:
+      if (isEmpty(state.currentUser)) {
+        return {
+          ...state,
+          anonUser: {
+            ...state.anonUser,
+            addresses: [action.address, ...state.anonUser.addresses]
+          }
+        }
+      } else {
+        return {
+          ...state,
+          currentUser: {
+            ...state.currentUser,
+            addresses: [action.address, ...state.currentUser.addresses]
+          }
+        }
+      }
+
+    case types.ADD_TO_STATE_CART:
+      if (isEmpty(state.currentUser)) {
+        return {
+          ...state,
+          anonUser: {
+            ...state.anonUser,
+            cart: [action.product, ...state.anonUser.cart]
+          }
+        }
+      } else {
+        return {
+          ...state,
+          currentUser: {
+            ...state.currentUser,
+            cart: [action.product, ...state.currentUser.cart]
+          }
+        }
+      }
+    case types.CLEAR_CART_STATE:
+      return {
+        ...state,
+        currentUser: {...state.currentUser, cart: []},
+        anonUser: {...state.currentUser, cart: []}
+      }
+    default:
+      return state
   }
 }
-
 function addAnonUser(state) {
   let user = JSON.parse(localStorage.getItem('anonUser'))
   if (!user) {

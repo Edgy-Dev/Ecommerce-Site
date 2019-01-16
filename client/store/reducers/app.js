@@ -55,7 +55,6 @@ const appReducer = (state = initialState, action) => {
         ...state,
         navbarConfig: {...state.navbarConfig, permOpen: false}
       }
-
     default:
       return state
   }

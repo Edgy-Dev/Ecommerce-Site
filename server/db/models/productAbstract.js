@@ -36,8 +36,7 @@ const ProductAbstract = db.define(
     },
     description: {
       type: Sequelize.TEXT,
-      defaultValue:
-        'Dozens of nerd hours were wasted bringing you this product...Enjoy!'
+      defaultValue: 'Dozens of nerd hours were wasted bringing you this product'
     }
   },
   {

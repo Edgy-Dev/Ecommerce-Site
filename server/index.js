@@ -1,5 +1,4 @@
 if (process.env.NODE_ENV !== 'production') require('../secrets')
-console.log(process.env.DATABASE_URL)
 
 const path = require('path')
 const express = require('express')
@@ -57,6 +56,7 @@ passport.deserializeUser(async (userId, done) => {
 })
 
 const createApp = () => {
+  console.log()
   // logging middleware
   app.use(morgan('dev'))
 

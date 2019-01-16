@@ -41,7 +41,8 @@ const mapDispatchToProps = dispatch => ({})
 
 const withConnect = connect(mapStateToProps, mapDispatchToProps)
 
-const loaders = [new LoaderFn('orders', retrieveOrders, makeSelectOrdersLoaded)]
+const ordersLoaded = () => () => false // Reloads data every time
+const loaders = [new LoaderFn('orders', retrieveOrders, ordersLoaded)]
 
 const withData = dataLoader(loaders)
 

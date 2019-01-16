@@ -17,8 +17,8 @@ class AllProductView extends Component {
         <div>
           <ul>
             {productList.map(product => (
-              <div>
-                <li key={product.name}>{product.name}</li>
+              <div key={product.id}>
+                <li>{product.name}</li>
                 <NavLink
                   to={`/products/${product.id}`}
                   component={SingleProductView}

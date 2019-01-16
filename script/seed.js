@@ -16,8 +16,8 @@ async function seed() {
   await db.sync({force: true})
   console.log('db synced!')
 
-  const totalUsers = 30
-  const totalProductsAb = 30
+  const totalUsers = 5
+  const totalProductsAb = 5
 
   // User data
   const users = Array(totalUsers)
@@ -135,7 +135,7 @@ async function seed() {
   // Set address and payment info
   for (let i = 0; i < totalUsers; i++) {
     userModels[i].password = User.encryptPassword(userModels[i].password(), 5)
-    userModels[i].cart = Math.random() > 0.5 ? [] : cart()
+    userModels[i].cart = Math.random() > 1 ? [] : cart()
     await userModels[i].save()
     await addressModels[i].setUser(userModels[i])
     await paymentModels[i].setUser(userModels[i])

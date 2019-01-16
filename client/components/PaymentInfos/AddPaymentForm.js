@@ -1,31 +1,35 @@
 import React from 'react'
+import {compose} from 'redux'
 import Input from '@material-ui/core/Input'
 import Button from '@material-ui/core/Button'
 import FormHelperText from '@material-ui/core/FormHelperText'
 
 import {FormBuilder, Field, FieldError, Validators} from '../shared/Forms'
+import {injectStripe, CardElement} from 'react-stripe-elements'
 
 const Form = props => {
+  const addPayment = async () => {
+    const {token} = await props.stripe.createToken()
+    props.displayPayment(token)
+  }
   return (
     <form
       className="auth-form"
-      onSubmit={event =>
-        props.handleSubmit(event, props.values, props.addPayment)
-      }
+      onSubmit={event => props.handleSubmit(event, props.values, addPayment)}
     >
       <Field
-        name="creditCard"
-        placeholder="Enter credit card"
+        name="name"
+        placeholder="Enter name on card"
         formFieldProps={{
-          label: 'creditCard',
-          value: props.values.creditCard,
+          label: 'name',
+          value: props.values.name,
           onChange: props.handleChange
         }}
         Component={Input}
-        renderFormError={() => (
-          <FieldError errors={props.formErrors.creditCard} />
-        )}
+        renderFormError={() => <FieldError errors={props.formErrors.name} />}
       />
+
+      <CardElement />
 
       {props.addPaymentError && (
         <FormHelperText className="auth-form-error">
@@ -46,21 +50,17 @@ const Form = props => {
   )
 }
 
-const AddPaymentForm = FormBuilder({
+const withFormBuilder = FormBuilder({
   state: {
     values: {
-      creditCard: ''
+      name: ''
     },
     formErrors: {
-      creditCard: []
+      name: []
     }
   },
   validators: {
-    creditCard: [
-      [Validators.isRequired, 'Credit Card is required.'],
-      [Validators.followsRegex(/^\d+$/), 'Credit card is invalid']
-    ]
+    name: [[Validators.isRequired, 'First name is required.']]
   }
-})(Form)
-
-export default AddPaymentForm
+})
+export default compose(withFormBuilder, injectStripe)(Form)

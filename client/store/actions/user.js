@@ -57,6 +57,20 @@ export const addOdder = order => ({
   order
 })
 
+export const addAddress = address => ({
+  type: types.ADD_ADDRESS,
+  address
+})
+
+export const clearCart = () => ({
+  type: types.CLEAR_CART_STATE
+})
+
+export const addToStateCart = product => ({
+  type: types.ADD_TO_STATE_CART,
+  product
+})
+
 /* thunk creators */
 export const me = () => dispatch => {
   return request('/auth/me', {}, dispatch, data => {
@@ -142,20 +156,20 @@ export const logout = () => dispatch => {
   })
 }
 
-export const checkout = (loggedInUser, cart) => dispatch => {
+export const checkout = data => dispatch => {
   return request(
     '/api/checkout',
     {
       method: 'POST',
-      body: JSON.stringify(cart)
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
     },
     dispatch,
     data => {
-      if (loggedInUser) {
-        history.push('/account/orders/' + data.orderId)
-      } else {
-        history.push('/order-success')
-      }
+      dispatch(clearCart())
+      history.push('/account/orders')
     },
     error => {
       dispatch(checkoutError(error.message))
@@ -167,4 +181,39 @@ export const retrieveOrders = () => dispatch => {
   return request('/api/users/orders', {}, dispatch, orders => {
     dispatch(initOrders(orders))
   })
+}
+
+export const createAddress = data => dispatch => {
+  return request(
+    '/api/users/add-address',
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    },
+    dispatch,
+    address => {
+      dispatch(addAddress(address))
+    }
+  )
+}
+
+export const putToCart = product => dispatch => {
+  return request(
+    '/api/users/add-to-cart',
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(product)
+    },
+    dispatch,
+    cartItem => {
+      console.log(cartItem)
+      dispatch(addToStateCart(cartItem))
+    }
+  )
 }

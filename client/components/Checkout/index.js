@@ -4,6 +4,7 @@ import {compose} from 'redux'
 import {connect} from 'react-redux'
 import Button from '@material-ui/core/Button'
 import {isEmpty} from 'lodash'
+import {Elements, StripeProvider} from 'react-stripe-elements'
 
 import {openDialog, closeDialog, resetDialog} from '../../store/actions/app'
 import {makeSelectAnonUser, makeSelectUser} from '../../store/selectors/user'
@@ -11,7 +12,6 @@ import {checkout} from '../../store/actions/user'
 import withTransition from '../shared/transitionWrapper'
 
 import {SelectShippingAddress} from '../ShippingAddresses'
-import {SelectPaymentInfo} from '../PaymentInfos'
 
 import CartItem from './CartItem'
 import {
@@ -24,15 +24,13 @@ import AddPaymentForm from '../PaymentInfos/AddPaymentForm'
 class Cart extends React.Component {
   constructor(props) {
     super(props)
-    console.log(props)
     this.user = isEmpty(this.props.user) ? this.props.anonUser : this.props.user
 
     this.state = {
       selectedAddress: this.initializeAddress(props),
-      selectedPaymentOption: this.initializePaymentOption(props)
+      selectedPaymentOption: {},
+      cart: this.initializeCart(props)
     }
-
-    this.user = isEmpty(this.props.user) ? this.props.anonUser : this.props.user
   }
 
   initializeAddress = () => {
@@ -43,8 +41,12 @@ class Cart extends React.Component {
     return this.user.paymentInfos.length > 0 ? this.user.paymentInfos[0] : {}
   }
 
+  initializeCart = () => {
+    return this.user.cart
+  }
+
   addAddress = data => {
-    console.log(data)
+    this.selectedAddress = data
     this.props.closeDialog()
   }
 
@@ -57,8 +59,20 @@ class Cart extends React.Component {
     this.props.openDialog(dialogOptions)
   }
 
-  addPayment = data => {
-    console.log(data)
+  setPayment = token => {
+    this.setState(state => ({
+      ...state,
+      selectedPaymentOption: {
+        lastFourDigits: token.card.last4,
+        expiration: `${token.card.exp_month}/${token.card.exp_year}`,
+        source: token.id
+      }
+    }))
+
+    this.props.closeDialog()
+  }
+
+  handleCloseDialog = () => {
     this.props.closeDialog()
   }
 
@@ -66,7 +80,11 @@ class Cart extends React.Component {
     const dialogOptions = {
       open: true,
       title: 'Add payment',
-      renderContent: () => <AddPaymentForm addPayment={this.addPayment} />
+      renderContent: () => (
+        <Elements>
+          <AddPaymentForm displayPayment={this.setPayment} />
+        </Elements>
+      )
     }
     this.props.openDialog(dialogOptions)
   }
@@ -88,66 +106,66 @@ class Cart extends React.Component {
   }
 
   checkout = () => {
-    console.log(this.state)
+    this.props.checkout(this.state)
   }
 
   render() {
-    return (
-      <div style={{width: '80%', margin: '30px auto'}}>
-        <h1 style={{margin: '30px 0'}}>Review Order</h1>
-        {this.user.cart.map(cartItem => (
-          <CartItem key={cartItem.product.id} cartItem={cartItem} />
-        ))}
+    if (this.user.cart.length === 0) {
+      return <h1>No products in cart</h1>
+    } else {
+      return (
+        <div style={{width: '80%', margin: '30px auto'}}>
+          <h1 style={{margin: '30px 0'}}>Review Order</h1>
+          {this.user.cart.map(cartItem => (
+            <CartItem key={cartItem.product.id} cartItem={cartItem} />
+          ))}
 
-        <h1 style={{margin: '30px 0'}}>Select Shipping Address</h1>
-        <div style={{display: 'flex', justifyContent: 'space-between'}}>
-          <SelectShippingAddress
-            selectedAddress={this.state.selectedAddress}
-            addresses={this.user.addresses}
-            handleChange={this.handleSelectAddress}
-          />
+          <h1 style={{margin: '30px 0'}}>Select Shipping Address</h1>
+          <div style={{display: 'flex', justifyContent: 'space-between'}}>
+            <SelectShippingAddress
+              selectedAddress={this.state.selectedAddress}
+              addresses={this.user.addresses}
+              handleChange={this.handleSelectAddress}
+            />
+            <Button
+              style={{height: '50px'}}
+              variant="contained"
+              color="primary"
+              onClick={this.handleAddAddress}
+            >
+              Add Address
+            </Button>
+          </div>
+          <DisplaySelectedAddress address={this.state.selectedAddress} />
+
+          <h1 style={{margin: '30px 0'}}>Add Payment Option</h1>
+          <div style={{display: 'flex', justifyContent: 'flex-end'}}>
+            <Button
+              style={{height: '50px', margin: '10px 0'}}
+              variant="contained"
+              color="primary"
+              onClick={this.handleAddPayment}
+            >
+              Add Payment
+            </Button>
+          </div>
+          {!isEmpty(this.state.selectedPaymentOption) && (
+            <DisplaySelectedPaymentOption
+              paymentOption={this.state.selectedPaymentOption}
+            />
+          )}
+          <div style={{margin: '30px 0'}} />
           <Button
-            style={{height: '50px'}}
+            style={{width: '100%'}}
             variant="contained"
             color="primary"
-            onClick={this.handleAddAddress}
+            onClick={this.checkout}
           >
-            Add Address
+            Checkout
           </Button>
         </div>
-        <DisplaySelectedAddress address={this.state.selectedAddress} />
-
-        <h1 style={{margin: '30px 0'}}>Choose Payment Option</h1>
-        <div style={{display: 'flex', justifyContent: 'space-between'}}>
-          <SelectPaymentInfo
-            selectedPayment={this.state.selectedPaymentOption}
-            paymentInfos={this.user.paymentInfos}
-            handleChange={this.handleSelectPaymentOption}
-          />
-          <Button
-            style={{height: '50px'}}
-            variant="contained"
-            color="primary"
-            onClick={this.handleAddPayment}
-          >
-            Add Payment
-          </Button>
-        </div>
-        <DisplaySelectedPaymentOption
-          paymentOption={this.state.selectedPaymentOption}
-        />
-
-        <div style={{margin: '30px 0'}} />
-        <Button
-          style={{width: '100%'}}
-          variant="contained"
-          color="primary"
-          onClick={this.checkout}
-        >
-          Checkout
-        </Button>
-      </div>
-    )
+      )
+    }
   }
 }
 
@@ -157,7 +175,7 @@ const mapStateToProps = createStructuredSelector({
 })
 
 const mapDispatchToProps = dispatch => ({
-  checkout: () => dispatch(checkout),
+  checkout: data => dispatch(checkout(data)),
   openDialog: dialogOptions => dispatch(openDialog(dialogOptions)),
   closeDialog: () => {
     dispatch(closeDialog())

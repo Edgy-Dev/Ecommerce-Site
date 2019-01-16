@@ -18,7 +18,6 @@ import ProtectedRoute from './components/shared/ProtectedRoute'
 import HasProtectionRoute from './components/shared/HasProtectionRoute'
 import dataLoader, {LoaderFn} from './components/shared/dataLoader'
 import {makeSelectProductsLoaded} from './store/selectors/product'
-
 /**
  * COMPONENT
  */

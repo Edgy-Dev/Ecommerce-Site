@@ -22,6 +22,9 @@ export const DisplaySelectedPaymentOption = ({paymentOption}) => {
       <Typography variant="h6" color="textSecondary">
         Visa: <small>XXXXXXXXXXXXX{paymentOption.lastFourDigits}</small>
       </Typography>
+      <Typography variant="h6" color="textSecondary">
+        Expires: <small>{paymentOption.expiration}</small>
+      </Typography>
     </div>
   )
 }

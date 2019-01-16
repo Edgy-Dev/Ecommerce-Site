@@ -1,16 +1,24 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {retreiveProducts} from '../../store/productAbstract'
+import {putToCart} from '../../store/actions/user'
 
 class SingleProductView extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      ...this.state,
-      currentProduct: {...this.props.displayedProducts[0]}
+      currentProduct: {
+        name: props.displayedProducts[0].name,
+        category: props.displayedProducts[0].category,
+        color: props.displayedProducts[0].color[0],
+        size: props.displayedProducts[0].size[0],
+        quantity: 1
+      }
     }
     this.handleChange = this.handleChange.bind(this)
+    this.handleSubmit = this.handleSubmit.bind(this)
   }
+
   handleChange(event) {
     const newProduct = this.state.currentProduct
     const place = event.target.getAttribute('name')
@@ -19,6 +27,11 @@ class SingleProductView extends Component {
     this.setState({
       currentProduct: newProduct
     })
+  }
+
+  handleSubmit(event) {
+    event.preventDefault()
+    this.props.putToCart(this.state.currentProduct)
   }
 
   render() {
@@ -40,7 +53,7 @@ class SingleProductView extends Component {
           </label>
           <select onChange={this.handleChange} name="size">
             {product.size.map(size => (
-              <option name="size" value={size}>
+              <option key={size} name="size" value={size}>
                 {size}
               </option>
             ))}
@@ -50,13 +63,36 @@ class SingleProductView extends Component {
           </label>
           <select onChange={this.handleChange} name="color">
             {product.color.map(color => (
-              <option name="color" value={color}>
+              <option key={color} name="color" value={color}>
                 {color}
               </option>
             ))}
           </select>
+          <label htmlFor="quantity" name="quantity">
+            Quantity:
+          </label>
+          <select onChange={this.handleChange} name="quantity">
+            <option name="quantity" value={1}>
+              1
+            </option>
+            <option name="quantity" value={2}>
+              2
+            </option>
+            <option name="quantity" value={3}>
+              3
+            </option>
+            <option name="quantity" value={4}>
+              4
+            </option>
+            <option name="quantity" value={5}>
+              5
+            </option>
+          </select>
+
           {/* {add api route to query product instance} */}
-          <button type="button">Add To Cart</button>
+          <button onClick={this.handleSubmit} type="submit">
+            Add To Cart
+          </button>
         </form>
       </div>
     )
@@ -76,6 +112,9 @@ const mapDispatchToProps = dispatch => {
   return {
     getProducts() {
       dispatch(retreiveProducts())
+    },
+    putToCart(product) {
+      dispatch(putToCart(product))
     }
   }
 }
